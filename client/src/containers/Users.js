@@ -1,36 +1,36 @@
 import React, {Component} from 'react'
 import {Redirect} from 'react-router-dom'
 import {connect} from 'react-redux'
+import Login from './Login'
 import {loadingDefer, displayReduxData, isEmpty} from '../utils'
 
 class Users extends Component {
-    state = {step: null}
+  state = {step: null}
 
-    componentDidMount() {
-        loadingDefer(1000).then(() => this.props.S01Action);
-    }
+  componentDidMount() {
+    loadingDefer(1000).then(() => this.props.S01Action);
+  }
 
-    handleStep(router) {
-        return e => {
-            this.setState({step: router});
-            e.preventDefault()
-        }
+  handleStep(router) {
+    return e => {
+      this.setState({step: router});
+      e.preventDefault()
     }
+  }
 
-    render() {
-        if (this.state.step) {
-            return <Redirect to={this.state.step}/>
-        }
-        return (
-            <>
-            {isEmpty(this.props["S01"]) ? <div className="loader"/> : <LoginForm /> }
-            {window.displayDebugInfo && displayReduxData([this.props.S01, this.props.loggedIn])}
-            </>
-        )
+  render() {
+    if (this.state.step) {
+      return <Redirect to={this.state.step}/>
     }
+    return (
+      <>
+      {isEmpty(this.props["S01"]) ? <div className="loader"/> : <Login /> }
+      {window.displayDebugInfo && displayReduxData([this.props.S01, this.props.loggedIn])}
+      </>
+    )
+  }
 }
 
 export default connect(
-    state => ({S01: state.S01, loggedIn: state.loggedIn}),
-    {S01Action}
+  state => ({S01: state.S01, loggedIn: state.loggedIn})
 )(Users)
