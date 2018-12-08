@@ -42,3 +42,16 @@ You don’t have to ever use `eject`. The curated feature set is suitable for sm
 You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
 
 To learn React, check out the [React documentation](https://reactjs.org/).
+
+
+## dependencies:
+
+1. react-bootstrap
+1. react-router-dom
+1. redux
+1. react-redux
+
+
+## The githib URL:
+
+https://github.com/jxjwilliam/react-user-login
