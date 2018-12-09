@@ -11,7 +11,7 @@ const jwt = require("jsonwebtoken");
 const index = require("./routes/index");
 const signup = require("./routes/signup");
 const login = require("./routes/login");
-const logout = require("./routes/logout");
+const user = require("./routes/user")
 
 const app = express();
 const routers = express.Router();
@@ -72,10 +72,7 @@ app.use((req, res, next) => {
   }
 });
 
-/////////////////////////////
-// app.use("/api/user", users);
-
-app.use('/api/logout', logout)
+app.use("/api/users", user);
 
 // catch 404 and forward to error handler
 app.use((req, res, next) => {

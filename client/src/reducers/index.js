@@ -1,12 +1,12 @@
 import {combineReducers} from 'redux'
+import jwt_decode from 'jwt-decode'
 
 const loginReducer = (state = {}, action) => {
   switch (action.type) {
     case "LOGIN_ACTION_SUCCESS":
-      return {
-        token: action.payload,
-        loggedIn: true
-      };
+      let token = action.payload;
+      let decoded = jwt_decode(token)
+      return {token, email: decoded.email, loggedIn: true}
     case "LOGIN_ACTION_FAIL":
       return {...action.payload, loggedIn: false}
     case "LOGOUT_ACTION":
@@ -15,17 +15,26 @@ const loginReducer = (state = {}, action) => {
   return state;
 }
 
-
 export const signupReducer = (state = {}, action) => {
   switch (action.type) {
     case "SIGNUP_ACTION":
       return action.payload;
   }
   return state;
+}
 
+export const userReducer = (state = {}, action) => {
+  switch (action.type) {
+    case 'GET_USER_ACTION':
+      return action.payload
+    case 'UPDATE_USER_ACTION':
+      return action.payload;
+  }
+  return state;
 }
 
 export default combineReducers({
   login: loginReducer,
-  signup: signupReducer
+  signup: signupReducer,
+  user: userReducer
 })

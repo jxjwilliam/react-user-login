@@ -18,7 +18,12 @@ Frontend
 - redux
 - react-router-dom
 - react-bootstrap
-
+- form: all form fields:
+  1. input (email, password)
+  1. checkbox
+  1. radio
+  1. select
+  1. textarea
 
 Backend
 ---------
@@ -34,7 +39,7 @@ API
 1. /api/signup
 1. /api/login
 1. /api/users
-1. /api/users/:user_email
+1. /api/users/:email
 1. /api/logout
 
 

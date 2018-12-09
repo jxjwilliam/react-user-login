@@ -23,27 +23,55 @@ export const loginAction = (body) => dispatch => {
     .catch(e => console.error(e))
 }
 
-export const signupAction = (form_data) => dispatch => {
+export const signupAction = (body) => dispatch => {
   return fetch("/api/signup", {
     method: "POST",
     headers: {"Content-type": "application/json"},
-    body: JSON.stringify(form_data)
+    body: JSON.stringify(body)
   })
     .then(res => res.json())
     .then(data => {
       return dispatch({
         type: "SIGNUP_ACTION",
-        payload: form_data
+        payload: data
       })
     })
     .catch(e => console.error(e))
 }
 
-export const searchAction = keyword => ({
-  type: "SEARCH",
-  payload: keyword
-})
+export const getUserAction = (email, token) => dispatch => {
+  return fetch("/api/users/" + email, {
+    method: 'GET',
+    headers: {
+      "Content-type": "application/json",
+      "x-access-token": token
+    }
+  })
+    .then(res => res.json())
+    .then(data => {
+      dispatch({
+        type: "GET_USER_ACTION",
+        payload: data
+      })
+    })
+    .catch(e => console.error(e))
+}
 
-export const sort = {
-  type: "SORT"
+export const updateUserAction = (form_data, token) => dispatch => {
+  return fetch("/api/users", {
+    method: "POST",
+    headers: {
+      "Content-type": "application/json",
+      "x-access-token": token
+    },
+    body: JSON.stringify(form_data)
+  })
+    .then(res => res.json())
+    .then(data => {
+      return dispatch({
+        type: "UPDATE_USER_ACTION",
+        payload: form_data
+      })
+    })
+    .catch(e => console.error(e))
 }

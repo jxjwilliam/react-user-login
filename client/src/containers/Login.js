@@ -3,7 +3,6 @@ import {Redirect} from 'react-router-dom'
 import {connect} from 'react-redux'
 import {FormGroup, FormControl, ControlLabel, Button} from 'react-bootstrap'
 import {loginAction} from '../actions'
-import jwt_decode from 'jwt-decode'
 
 class Login extends Component {
   state = {
@@ -21,22 +20,20 @@ class Login extends Component {
 
   handleSubmit = e => {
     e.preventDefault();
-    let formData = new FormData();
     this.props.loginAction(this.state)
       .then(data => {
-        const token = data.payload;
+        const token = this.props.login.token;
         if (token) {
-          let decoded = jwt_decode(token)
-          console.info(decoded)
-          this.setState({email: decoded.email})
           sessionStorage.setItem("userLoginToken", token)
         }
       })
   }
 
   render() {
-    if (this.props.login.loggedIn && this.state.email) {
-      return <Redirect to={`/signup`}/>
+    const {email, loggedIn} = this.props.login;
+    if (loggedIn && email) {
+      return <Redirect to={`/users/${email}`}/>
+      //return <Users {...this.props.login} email={this.state.email}/>
     }
     return (
       <div className="login">

@@ -22,7 +22,6 @@ class Signup extends Component {
 
   handleSubmit = e => {
     e.preventDefault();
-    let formData = new FormData();
     this.props.signupAction(this.state);
   }
 

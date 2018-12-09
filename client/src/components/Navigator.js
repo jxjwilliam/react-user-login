@@ -1,16 +1,16 @@
 import React from 'react';
-import {Link} from 'react-router-dom'
+import {NavLink} from 'react-router-dom'
 
 const Navigator = () => (
   <ul className="navbar-nav mr-auto">
     <li className="nav-item">
-      <Link className="nav-link" to="/login">Login</Link>
+      <NavLink exact activeStyle={{color: 'green'}} to="/login">Login</NavLink>
     </li>
     <li className="nav-item">
-      <Link className="nav-link" to="/signup">Sign Up</Link>
+      <NavLink exact activeStyle={{color: 'green'}} to="/signup">Sign Up</NavLink>
     </li>
     <li className="nav-item">
-      <Link className="nav-link" to="/users">Logout</Link>
+      <NavLink exact activeStyle={{color: 'green'}} to="/logout">Logout</NavLink>
     </li>
   </ul>
 );

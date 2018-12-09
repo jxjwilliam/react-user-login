@@ -11,13 +11,21 @@ const UserLoginRouters = () => (
     <Route exact path="/" component={Login}/>
     <Route path="/login" component={Login}/>
     <Route path="/signup" component={Signup}/>
-    <Route path="/users/:email" render={props => {
-      console.log('--william in app--', props);
-      return (
-        <Users {...props} />
-      )
-    }}
-    />
+    <Route path="/users/:email" exact strict component={Users}/>
+    <Route path="/users" component={Users}/>
+    <Route path="/login" render={(props) => {
+      try {
+        props.login.token = ''
+        props.login.email = ''
+        props.login.loggedIn = false
+        sessionStorage.removeItem("userLoginToken")
+      } catch (e) {
+      }
+      return <Redirect to="/"/>
+    }}/>
+    <Route render={({match}) => {
+      return <Redirect to="/"/>
+    }}/>
   </Switch>
 )
 

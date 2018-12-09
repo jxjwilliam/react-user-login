@@ -6,15 +6,12 @@ const User = require('../models/loginUser');
 router.post('/', (req, res, next) => {
 
   let {email, password} = req.body;
-  console.log('--- william signup ---: ', email, password)
-
   if (!(email && password)) {
     return res.json({
       success: false,
       message: 'Error: mandatory field is missing.'
     });
   }
-  email = email.toLowerCase();
 
   User.find({email: email}, (err, users) => {
     if (err) {
