@@ -11,16 +11,18 @@ const loginReducer = (state = {}, action) => {
       return {...action.payload, loggedIn: false}
     case "LOGOUT_ACTION":
       return {...action.payload, loggedIn: false}
+    default:
+      return state;
   }
-  return state;
 }
 
 export const signupReducer = (state = {}, action) => {
   switch (action.type) {
     case "SIGNUP_ACTION":
       return action.payload;
+    default:
+      return state;
   }
-  return state;
 }
 
 export const userReducer = (state = {}, action) => {
@@ -29,8 +31,9 @@ export const userReducer = (state = {}, action) => {
       return action.payload
     case 'UPDATE_USER_ACTION':
       return action.payload;
+    default:
+      return state;
   }
-  return state;
 }
 
 export default combineReducers({

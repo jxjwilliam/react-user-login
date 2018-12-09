@@ -1,4 +1,4 @@
-import React, {Component, Fragment} from 'react';
+import React, {Component} from 'react';
 import {Redirect} from 'react-router-dom'
 import {connect} from 'react-redux'
 import {FormGroup, FormControl, ControlLabel, Button} from 'react-bootstrap'
@@ -8,6 +8,10 @@ class Login extends Component {
   state = {
     email: '',
     password: ''
+  }
+
+  componentDidUnMount() {
+    this.setState({email: '', password: ''})
   }
 
   validateForm = () => {
@@ -29,11 +33,11 @@ class Login extends Component {
       })
   }
 
+  //return <Users {...this.props.login} email={this.state.email}/>
   render() {
     const {email, loggedIn} = this.props.login;
-    if (loggedIn && email) {
+    if (loggedIn && email && this.state.password) {
       return <Redirect to={`/users/${email}`}/>
-      //return <Users {...this.props.login} email={this.state.email}/>
     }
     return (
       <div className="login">

@@ -1,10 +1,7 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux'
-import {bindActionCreators} from 'redux'
 import {FormGroup, FormControl, ControlLabel, Button} from 'react-bootstrap'
-import {filterData} from '../utils'
 import {signupAction} from '../actions'
-import jwt_decode from 'jwt-decode'
 
 class Signup extends Component {
   state = {
