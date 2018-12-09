@@ -38,7 +38,7 @@ Frontend
   1. radio
   1. select
   1. textarea
-
+- Form validation
 
 Backend
 ---------
@@ -92,3 +92,37 @@ Scaffolders
 
 1. create-react-app
 1. express-cli
+
+Screenshots
+------------
+
+The following are the screenshots with the sequences:
+
+1. Signup to create a user
+
+![Signup](./imgs/1.png)
+
+2. Login with this created user
+
+![Login](./imgs/2.png)
+
+3. Entry of Edit screen
+
+![Initial Form](./imgs/3.png)
+
+4. Edit the Form
+
+![Eidt Form](./imgs/4.png)
+
+5. Submit the Form
+
+![submit](./imgs/5.png)
+
+6. Re login this user
+
+![Re-Login](./imgs/6.png)
+
+7. check the data persistance
+
+![Review](./imgs/7.png)
+
