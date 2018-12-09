@@ -9,13 +9,13 @@ import './App.css'
 
 const UserLoginRouters = () => (
   <Switch>
-    <Route exact path="/" render={() => <h1>Home</h1> } />
+    <Route exact path="/" component={Login}/>
     <Route path="/login" component={Login}/>
     <Route path="/signup" component={Signup}/>
     <Route path="/users/:email" exact strict component={Users}/>
     {/*<Route path="/users" component={Users}/>*/}
     <Route path="/logout" component={Logout}/>
-    <Route render={({match}) => <Redirect to="/" />}/>
+    <Route render={({match}) => <Redirect to="/"/>}/>
   </Switch>
 )
 

@@ -1,50 +1,68 @@
 Quick Start
 ------------
 
+```bash
+$ git clone https://github.com/jxjwilliam/react-user-login.git
+$ cd react-user-login
+$ cd client
+$ npm install
+$ npm build
+$ cd ..
+$ npm install
+$ npm run server
+$ open localhost:8888/
+```
+
+Here it goes!
 
 
 MERN fullstack technology
------
+--------------------------
 
-1. MongoDB + Mongoose
-1. Express.js
 1. React.js
 1. Node.js
+1. Express.js
+1. MongoDB + Mongoose
 
 
 Frontend
 ---------
 
-- redux
+- React
+- Redux (with redux-thunk, redux-logger)
 - react-router-dom
 - react-bootstrap
-- form: all form fields:
+- react form: with the form fields:
   1. input (email, password)
   1. checkbox
   1. radio
   1. select
   1. textarea
 
+
 Backend
 ---------
 
 - jwt token
 - bcrypt
+- routers
+- express.js
 
 
-
-API
+APIs
 ----
 
 1. /api/signup
 1. /api/login
-1. /api/users
 1. /api/users/:email
 1. /api/logout
+1. /api/users
 
 
 DB Schema
 -----------
+
+- mongoose schema:
 
 ```javascript
 {
@@ -68,3 +86,9 @@ DB Schema
   }
 }
 ```
+
+Scaffolders
+------------
+
+1. create-react-app
+1. express-cli
