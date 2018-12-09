@@ -1,11 +1,12 @@
-import React, {Component, Fragment} from 'react';
-import {Redirect} from 'react-router-dom'
+import React, {Component} from 'react';
 import {connect} from 'react-redux'
+import {bindActionCreators} from 'redux'
 import {FormGroup, FormControl, ControlLabel, Button} from 'react-bootstrap'
-import {loginAction} from '../actions'
+import {filterData} from '../utils'
+import {signupAction} from '../actions'
 import jwt_decode from 'jwt-decode'
 
-class Login extends Component {
+class Signup extends Component {
   state = {
     email: '',
     password: ''
@@ -22,25 +23,14 @@ class Login extends Component {
   handleSubmit = e => {
     e.preventDefault();
     let formData = new FormData();
-    this.props.loginAction(this.state)
-      .then(data => {
-        const token = data.payload;
-        if (token) {
-          let decoded = jwt_decode(token)
-          console.info(decoded)
-          this.setState({email: decoded.email})
-          sessionStorage.setItem("userLoginToken", token)
-        }
-      })
+    this.props.signupAction(this.state);
   }
 
+
   render() {
-    if (this.props.login.loggedIn && this.state.email) {
-      return <Redirect to={`/signup`}/>
-    }
     return (
-      <div className="login">
-        <h1>Login</h1>
+      <div className="signup">
+        <h1>Sign Up</h1>
         <form onSubmit={this.handleSubmit}>
           <FormGroup controlId="email" bsSize="large">
             <ControlLabel>Email</ControlLabel>
@@ -67,7 +57,7 @@ class Login extends Component {
             disabled={!this.validateForm()}
             bsSize="large"
             bsStyle="danger"
-          >Login</Button>
+          >Sign Up !</Button>
         </form>
       </div>
     )
@@ -75,7 +65,7 @@ class Login extends Component {
 }
 
 export default connect(
-  state => ({login: state.login}),
-  {loginAction}
-)(Login)
+  state => ({signup: state.signup}),
+  {signupAction}
+)(Signup)
 

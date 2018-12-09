@@ -31,6 +31,28 @@
   }
 }
 
+@media all and (min-width: 480px) {
+  .login, .signup {
+    padding: 60px 0;
+  }
+
+  .login form, .signup form {
+    margin: 0 auto;
+    max-width: 320px;
+  }
+}
+
+@media all and (min-width: 480px) {
+  .user {
+    padding: 60px 0;
+  }
+
+  .user form {
+    margin: 0 auto;
+    max-width: 320px;
+  }
+}
+
 .loader {
   position: absolute;
   top: 50%;

@@ -3,7 +3,9 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "start": "node ./bin/www"
+    "server": "nodemon ./bin/www",
+    "start": "babel-node ./bin/www",
+    "dev": "concurrently \"cd client && yarn start\" \"npm start\""
   },
   "dependencies": {
     "bcrypt": "^3.0.2",

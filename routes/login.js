@@ -1,32 +1,91 @@
 const express = require('express');
+const router = express.Router();
 const parseFormdata = require('parse-formdata');
 const jwt = require('jsonwebtoken');
-const router = express.Router();
-const Login = require('../models/login');
-const User = require('../models/user');
-const SECRET = "williamjiangjsonwebtoken";
+const SECRET = "userloginjsonwebtoken";
+const User = require('../models/loginUser');
 
-// route middleware that will happen on every request
-router.use((req, res, next) => {
-  console.log('in route middleware:', req.method, req.url);
-  next();
+router.post('/', (req, res, next) => {
+
+  let {email, password} = req.body;
+  console.log('--- william login---: ', email, password)
+
+  if (!(email && password)) {
+    return res.json({
+      success: false,
+      message: 'Error: mandatory field is missing.'
+    });
+  }
+  email = email.toLowerCase();
+
+  User.find({email: email}, (err, users) => {
+
+    if (err) {
+      return res.json({
+        success: false,
+        message: 'Error: Server error'
+      });
+    }
+    else if (users.length === 0) {
+      res.json({
+        success: false,
+        message: 'Error: this email does not register yet.'
+      })
+    }
+    else if (users.length > 1) {
+      res.json({
+        success: false,
+        message: 'Error: this email have more than 1 accounts'
+      })
+    }
+
+    //users=1
+    const user = users[0];
+    if (typeof user !== 'object') {
+      res.json({
+        success: false,
+        message: 'Authentication failed. Login User is not found.'
+      });
+    }
+    else {
+      if (!user.validPassword(password, user.password)) {
+        res.json({
+          success: false,
+          message: 'Authentication failed. Password is not correct.'
+        });
+      }
+      else {
+        console.log('-- william user --', user)
+        // if user is found and password is right, create a token
+        const payload = {
+          _id: user._id,
+          email: user.email,
+          firstName: user.firstName,
+          lastName: user.lastName,
+          location: user.location,
+          role: user.role,
+          team: user.team,
+          comment: user.comment,
+          timestamp: user.timestamp
+        }
+        const token = jwt.sign(payload, SECRET, {
+          expiresIn: 86400 // expires in 24 hours
+        });
+
+        res.json({
+          success: true,
+          message: 'Enjoy your token!',
+          token: token
+        });
+      }
+    }
+  });
 });
 
-router.get('/signup', (req, res, next) => {
-  return res.json({
-    success: true,
-    message: 'user signup'
-  })
-});
-
-// for content-type: application/json
-router.post('/sinup1', (req, res, next) => {
-  console.log('application.json: ', req.body);
-});
 
 // for formData and Content-Type:	multipart/form-data
-router.post('/signup', (req, res, next) => {
-
+router.post('/:email', (req, res, next) => {
+  console.log('using email to edit account.')
   // this is the solution for 'formData'.
   parseFormdata(req, (err, data) => {
     console.log('formData, multipart/form-data: ', data.fields, data.parts);
@@ -42,7 +101,7 @@ router.post('/signup', (req, res, next) => {
 
     email = email.toLowerCase();
 
-    Login.find({email: email}, (err, users) => {
+    User.find({email: email}, (err, users) => {
       if (err) {
         return res.json({
           success: false,
@@ -56,7 +115,7 @@ router.post('/signup', (req, res, next) => {
         })
       }
 
-      const user = new Login({
+      const user = new User({
         firstName, lastName, email
       });
       user.password = user.generateHash(password);
@@ -71,93 +130,6 @@ router.post('/signup', (req, res, next) => {
       });
     });
   })
-});
-
-router.post('/signin', (req, res, next) => {
-
-  let {email, password} = req.body;
-  if (!(email && password)) {
-    return res.json({
-      success: false,
-      message: 'Error: mandatory field is missing.'
-    });
-  }
-
-  email = email.toLowerCase();
-  Login.find({email: email}, (err, users) => {
-
-    if (err) {
-      return res.json({
-        success: false,
-        message: 'Error: Server error'
-      });
-    }
-    else if (users.length === 0) {
-      res.json({
-        success: false,
-        message: 'Error: this email has no account'
-      })
-    }
-    else if (users.length > 1) {
-      res.json({
-        success: false,
-        message: 'Error: this email have more than 1 accounts'
-      })
-    }
-
-    const user = users[0];
-    if (typeof user !== 'object') {
-      res.json({
-        success: false,
-        message: 'Authentication failed. Login not found.'
-      });
-    }
-    else {
-      if (!user.validPassword(password, user.password)) {
-        res.json({
-          success: false,
-          message: 'Authentication failed. Password is not correct.'
-        });
-      }
-      else {
-        // Save in UserSession
-        const userSession = new UserSession({
-          userId: user._id,
-          email,
-          timestamp: Date.now()
-        });
-
-        userSession.save((err, doc) => {
-          if (err) {
-            return res.json({
-              success: false,
-              message: 'Error: Server error'
-            });
-          }
-          // res.json({
-          //   success: true,
-          //   message: 'Valid Sign In',
-          //   token: doc._id
-          // })
-          // if user is found and password is right, create a token
-          const payload = {
-            firstName: user.firstName,
-            lastName: user.lastName,
-            email: user.email
-          }
-          const token = jwt.sign(payload, SECRET, {
-            expiresIn: 86400 // expires in 24 hours
-          });
-
-          res.json({
-            success: true,
-            message: 'Enjoy your token!',
-            token: token
-          });
-        })
-      }
-    }
-  });
 });
 
 module.exports = router;

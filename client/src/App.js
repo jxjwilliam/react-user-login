@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import {Header, Footer, Navigator} from './components'
 import {BrowserRouter as Router, Route, Switch, Redirect} from 'react-router-dom'
 import Login from './containers/Login'
+import Signup from './containers/Signup'
 import Users from './containers/Users'
 import './App.css'
 
@@ -9,16 +10,12 @@ const UserLoginRouters = () => (
   <Switch>
     <Route exact path="/" component={Login}/>
     <Route path="/login" component={Login}/>
-    <Route path="/users" component={Users}/>
-    <Route path="/users/:id" render={props => {
-      const {loggedIn, ...rest} = props;
+    <Route path="/signup" component={Signup}/>
+    <Route path="/users/:email" render={props => {
+      console.log('--william in app--', props);
       return (
-        loggedIn ? <Users {...rest} /> : <Redirect to="/"/>
+        <Users {...props} />
       )
-    }}
-    />
-    <Route render={() => {
-      return <Redirect to="/"/>
     }}
     />
   </Switch>

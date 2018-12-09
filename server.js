@@ -7,10 +7,9 @@ const bodyParser = require("body-parser");
 
 const mongoose = require("mongoose");
 const jwt = require("jsonwebtoken");
-const Login = require("./models/login");
 
 const index = require("./routes/index");
-const users = require("./routes/users");
+const signup = require("./routes/signup");
 const login = require("./routes/login");
 const logout = require("./routes/logout");
 
@@ -18,9 +17,9 @@ const app = express();
 const routers = express.Router();
 
 mongoose.connect("mongodb://localhost:27017/userlogin", {useNewUrlParser: true});
-app.set("superSecret", "williamjiangjsonwebtoken");
+app.set("superSecret", "userloginjsonwebtoken");
 
-app.use(favicon(path.join(__dirname, "favicon.ico")));
+// app.use(favicon(path.join(__dirname, "favicon.ico")));
 app.use(logger("dev"));
 
 // parse application/json
@@ -37,8 +36,9 @@ app.use(express.static(path.join(__dirname, "client", "build")));
 
 app.use("/", index);
 
-// Application Server-stuff, providing service: signin, singup, signout
-app.use("/api/login", sign);
+app.use("/api/signup", signup);
+
+app.use('/api/login', login);
 
 /////////////////////////////
 
@@ -73,13 +73,13 @@ app.use((req, res, next) => {
 });
 
 /////////////////////////////
-app.use("/api/user", users);
+// app.use("/api/user", users);
 
 app.use('/api/logout', logout)
 
 // catch 404 and forward to error handler
 app.use((req, res, next) => {
-  const err = new Error("Not Found111");
+  const err = new Error("Not Found.");
   err.status = 404;
   next(err);
 });
