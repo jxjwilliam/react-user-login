@@ -69,7 +69,12 @@ class Users extends Component {
       e.target.checked && this.setState({'role': e.target.id})
     }
     else if (e.target.type === 'checkbox') {
-      e.target.checked && this.setState({'team': [...this.state.team, e.target.id]})
+      if (e.target.checked) {
+        this.setState({'team': [...this.state.team, e.target.id]})
+      }
+      else {
+        this.setState({'team': this.state.team.filter(t => t !== e.target.id)})
+      }
     }
     else {
       this.setState({[e.target.id]: e.target.value})
@@ -126,14 +131,27 @@ class Users extends Component {
               <FormGroup id="team" bsSize="large" style={{margin: '15px'}}>
                 <ControlLabel>Team:</ControlLabel>
                 {['Development Team', 'Support Group', 'Admin'].map(t => (
-                  <Checkbox inline key={t} id={t} onChange={this.handleChange}>{t}</Checkbox>
+                  <Checkbox
+                    inline key={t} id={t}
+                    onChange={this.handleChange}
+                    checked={this.state.team.indexOf(t) !== -1}
+                  >
+                    {t}
+                  </Checkbox>
                 ))}
               </FormGroup>
 
               <FormGroup id="role" bsSize="large">
                 <ControlLabel>Role:</ControlLabel>
                 {['Scrum Master', 'Project Manager', 'Business Analyst'].map(r => (
-                  <Radio name="radioGroup" inline id={r} key={r} onChange={this.handleChange}>{r}</Radio>
+                  <Radio
+                    name="radioGroup" inline
+                    id={r} key={r}
+                    onChange={this.handleChange}
+                    checked={this.state.role === r}
+                  >
+                    {r}
+                  </Radio>
                 ))}
               </FormGroup>
 
