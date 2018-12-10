@@ -53,6 +53,7 @@ export const getUserAction = (email, token) => dispatch => {
     method: 'GET',
     headers: {
       "Content-type": "application/json",
+      "Accept": "application/json",
       "x-access-token": token
     }
   })
@@ -71,6 +72,7 @@ export const updateUserAction = (form_data, token) => dispatch => {
     method: "POST",
     headers: {
       "Content-type": "application/json",
+      "Accept": "application/json",
       "x-access-token": token
     },
     body: JSON.stringify(form_data)

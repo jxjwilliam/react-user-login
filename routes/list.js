@@ -4,7 +4,7 @@ const User = require('../models/loginUser')
 //total items:
 router.route('/total')
   .get((req, res, next) => {
-    User.count({}, (err, count) => {
+    User.countDocuments({}, (err, count) => {
       if (err) return next(err)
       return res.json({total: count})
     })

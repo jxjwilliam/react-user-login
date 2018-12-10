@@ -1,18 +1,28 @@
+//TODO: "x-access-token": token
 export const getUsers = (page = 1) => {
   return (dispatch, getState) => {
     const users = getState().userList;
     fetch(`/api/list/page/${page}`, {
       method: 'GET',
       headers: {
-        'Accept': 'application/json'
+        "Content-type": "application/json",
+        "Accept": "application/json",
       }
     })
       .then(res => res.json())
       .then(data => {
-        dispatch({
-          type: 'FETCH_USERS',
-          payload: data
-        });
+        if(Array.isArray(data)) {
+          dispatch({
+            type: 'FETCH_USERS',
+            payload: data
+          });
+        }
+        else {
+          dispatch({
+            type: 'FETCH_USERS_FAIL',
+            payload: data
+          });
+        }
       });
   }
 };
@@ -95,12 +105,3 @@ export const searchUser = username => ({
   type: 'SEARCH_USERS',
   payload: username
 });
-
-const searchUserFulfilled = payload => {
-  //console.warn('how many times?', payload.length); //25, 3...
-  if (!payload || payload.length === 0) {
-    console.log('no matching, try again');
-    return {type: 'SEARCH_USERS_NULL'};
-  }
-  return {type: 'SEARCH_USERS_FULFILLED', payload};
-}

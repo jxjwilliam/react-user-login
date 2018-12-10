@@ -1,5 +1,6 @@
 import {combineReducers} from 'redux'
 import jwt_decode from 'jwt-decode'
+import userListReducer from './listReducer'
 
 const loginReducer = (state = {}, action) => {
   switch (action.type) {
@@ -41,5 +42,6 @@ export const userReducer = (state = {}, action) => {
 export default combineReducers({
   login: loginReducer,
   signup: signupReducer,
-  user: userReducer
+  user: userReducer,
+  userList: userListReducer
 })

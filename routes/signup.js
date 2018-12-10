@@ -23,7 +23,7 @@ router.post('/', (req, res, next) => {
     else if (users.length > 0) {
       return res.json({
         success: false,
-        message: 'Error: Account already exist'
+        message: 'Error: Account already exists'
       })
     }
 
@@ -35,7 +35,7 @@ router.post('/', (req, res, next) => {
 
       res.json({
         success: true,
-        message: 'Account is saved successfully'
+        message: 'Account was saved successfully'
       });
     });
   });
