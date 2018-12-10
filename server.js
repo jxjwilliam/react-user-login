@@ -12,6 +12,7 @@ const index = require("./routes/index");
 const signup = require("./routes/signup");
 const login = require("./routes/login");
 const user = require("./routes/user")
+const list = require("./routes/list")
 
 const app = express();
 const routers = express.Router();
@@ -39,6 +40,8 @@ app.use("/", index);
 app.use("/api/signup", signup);
 
 app.use('/api/login', login);
+
+app.use('/api/list', list)
 
 /////////////////////////////
 
