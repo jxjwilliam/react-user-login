@@ -3,7 +3,7 @@ import {connect} from 'react-redux'
 import {Redirect, Link} from 'react-router-dom'
 import {FormGroup, FormControl, ControlLabel, Checkbox, Radio, Button, HelpBlock} from 'react-bootstrap'
 import {getUserAction, updateUserAction} from '../actions'
-import {loadingDefer, isEmpty} from '../utils'
+import {loadingDefer, isEmpty, displayInfo} from '../utils'
 
 const FieldGroup = ({id, label, help, ...props}) => (
   <FormGroup controlId={id}>
@@ -13,14 +13,11 @@ const FieldGroup = ({id, label, help, ...props}) => (
   </FormGroup>
 );
 
-const AfterUpdate = ({email}) => (
-  <div className="jumbotron jumbotron-fluid">
-    <div className="container">
-      <h3 className="display-4">Update {email} Successful.</h3>
-      <p><Link to="/">Return Home/Login Page</Link></p>
-    </div>
-  </div>
-);
+const AfterUpdate = ({email}) => {
+  const h3 = <h3>Update ${email} Successful.</h3>;
+  const p = <p>Return <Link to="/login">Login <i className="fa fa-user"></i></Link></p>;
+  return displayInfo(h3, p);
+}
 
 class Users extends Component {
   state = {

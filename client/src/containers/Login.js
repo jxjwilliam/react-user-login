@@ -41,7 +41,7 @@ class Login extends Component {
     }
     return (
       <div className="login">
-        <h1>Login</h1>
+        <h1>Login <i className="fa fa-user"></i></h1>
         <form onSubmit={this.handleSubmit}>
           <FormGroup controlId="email" bsSize="large">
             <ControlLabel>Email</ControlLabel>
@@ -68,7 +68,8 @@ class Login extends Component {
             disabled={!this.validateForm()}
             bsSize="large"
             bsStyle="danger"
-          >Login</Button>
+          >Login <i className="fa fa-user"></i>
+          </Button>
         </form>
       </div>
     )

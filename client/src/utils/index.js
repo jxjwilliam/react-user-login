@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {Fragment} from 'react'
 
 export const loadingDefer = ms => {
   return new Promise((resolve, reject) => {
@@ -6,6 +6,21 @@ export const loadingDefer = ms => {
     setTimeout(() => resolve('user-login'), ms);
   })
 }
+
+export const isEmpty = prop => {
+  return prop === null || prop === undefined ||
+    (prop.hasOwnProperty("length") && prop.length === 0) ||
+    (prop.constructor === Object && Object.keys(prop).length === 0)
+}
+
+export const displayInfo = (h3, p) => (
+  <div className="jumbotron jumbotron-fluid">
+    <div className="container">
+      <Fragment>{h3}</Fragment>
+      <Fragment>{p}</Fragment>
+    </div>
+  </div>
+)
 
 export const filterData = (state, items) => {
   if (Array.isArray(items)) {
@@ -45,10 +60,4 @@ export const displayReduxData = data => {
             </pre>
     </blockquote>
   )
-}
-
-export const isEmpty = prop => {
-  return prop === null || prop === undefined ||
-    (prop.hasOwnProperty("length") && prop.length === 0) ||
-    (prop.constructor === Object && Object.keys(prop).length === 0)
 }

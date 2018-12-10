@@ -16,9 +16,11 @@ const loginReducer = (state = {}, action) => {
   }
 }
 
-export const signupReducer = (state = {}, action) => {
+export const signupReducer = (state = '', action) => {
   switch (action.type) {
-    case "SIGNUP_ACTION":
+    case "SIGNUP_ACTION_SUCCESS":
+      return action.payload;
+    case "SIGNUP_ACTION_FAIL":
       return action.payload;
     default:
       return state;

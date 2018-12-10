@@ -23,6 +23,7 @@ export const loginAction = (body) => dispatch => {
     .catch(e => console.error(e))
 }
 
+//{"success":false,"message":"Error: Account already exist"}
 export const signupAction = (body) => dispatch => {
   return fetch("/api/signup", {
     method: "POST",
@@ -31,10 +32,18 @@ export const signupAction = (body) => dispatch => {
   })
     .then(res => res.json())
     .then(data => {
-      return dispatch({
-        type: "SIGNUP_ACTION",
-        payload: data
-      })
+      if (data.success) {
+        return dispatch({
+          type: "SIGNUP_ACTION_SUCCESS",
+          payload: data
+        })
+      }
+      else {
+        return dispatch({
+          type: "SIGNUP_ACTION_FAIL",
+          payload: data
+        })
+      }
     })
     .catch(e => console.error(e))
 }

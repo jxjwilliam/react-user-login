@@ -55,3 +55,9 @@ To learn React, check out the [React documentation](https://reactjs.org/).
 ## The githib URL:
 
 https://github.com/jxjwilliam/react-user-login
+
+
+## Notices
+
+
+1. Glyphicon has been dropped from Bootstrap 4.
