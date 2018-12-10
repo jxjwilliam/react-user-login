@@ -7,9 +7,12 @@ import {loginAction} from '../actions'
 class Login extends Component {
   state = {
     email: '',
-    password: ''
+    password: '',
+    done: false
   }
 
+  // when navigating from Users to Login, the fields are auto filled, and jump back to Users again.
+  // handleChange auto excuted. weird ???
   componentDidUnMount() {
     this.setState({email: '', password: ''})
   }
@@ -22,12 +25,18 @@ class Login extends Component {
     this.setState({[e.target.id]: e.target.value})
   }
 
+  /**
+   * API calls has at least 2 cases:
+   * success: action.type=SUCCESS
+   * failure: action.type=FAILURE
+   */
   handleSubmit = e => {
     e.preventDefault();
     this.props.loginAction(this.state)
       .then(data => {
         const token = this.props.login.token;
         if (token) {
+          this.setState({done: true})
           sessionStorage.setItem("userLoginToken", token)
         }
       })
@@ -36,7 +45,7 @@ class Login extends Component {
   //return <Users {...this.props.login} email={this.state.email}/>
   render() {
     const {email, loggedIn} = this.props.login;
-    if (loggedIn && email && this.state.password) {
+    if (loggedIn && email && this.state.done) {
       return <Redirect to={`/users/${email}`}/>
     }
     return (

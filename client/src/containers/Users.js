@@ -14,7 +14,7 @@ const FieldGroup = ({id, label, help, ...props}) => (
 );
 
 const AfterUpdate = ({email}) => {
-  const h3 = <h3>Update ${email} Successful.</h3>;
+  const h3 = <h3>Update {email} Successful.</h3>;
   const p = <p>Return <Link to="/login">Login <i className="fa fa-user"></i></Link></p>;
   return displayInfo(h3, p);
 }
@@ -41,12 +41,12 @@ class Users extends Component {
           this.setState((state, ownProps) => {
             if (!isEmpty(ownProps.user)) {
               return {
-                firstName: ownProps.user['firstName'],
-                lastName: ownProps.user['lastName'],
+                firstName: ownProps.user['firstName'] || '',
+                lastName: ownProps.user['lastName'] || '',
                 team: ownProps.user['team'],
-                role: ownProps.user['role'],
-                location: ownProps.user['location'],
-                comment: ownProps.user['comment'],
+                role: ownProps.user['role'] || '',
+                location: ownProps.user['location'] || '',
+                comment: ownProps.user['comment'] || '',
               }
             }
           });
@@ -92,6 +92,7 @@ class Users extends Component {
     }
   }
 
+  //<i className="fal fa-user-edit"></i> <i className="fa fa-user-edit"></i> not work
   render() {
     if (this.state.step) {
       return <Redirect to={`/${this.state.step}`}/>
@@ -106,20 +107,22 @@ class Users extends Component {
         ? <div className="loader"/> : (
           <div className="user">
             {this.state.done && <AfterUpdate email={email}/>}
-            <h3><u>{email}</u> Preview & Edit</h3>
+            <h3><u>{email}</u> Preview & Edit <i className="fa fa-edit"></i></h3>
             <form onSubmit={this.handleSubmit}>
               <FieldGroup
                 id="firstName"
-                type="text"
                 label="First Name"
+                help="First Name is a mandatory field."
+                type="text"
                 placeholder="First Name"
                 value={this.state.firstName}
                 onChange={this.handleChange}
               />
               <FieldGroup
                 id="lastName"
-                type="text"
                 label="Last Name"
+                help="Last Name is a mandatory field."
+                type="text"
                 placeholder="Last Name"
                 value={this.state.lastName}
                 onChange={this.handleChange}
@@ -182,7 +185,7 @@ class Users extends Component {
                 type="submit"
                 bsSize="large"
                 bsStyle="danger">
-                Edit User {email}
+                Edit {email} <i className="fa fa-edit"></i>
               </Button>
             </form>
           </div>
