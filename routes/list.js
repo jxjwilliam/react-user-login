@@ -11,11 +11,11 @@ router.route('/total')
   });
 
 // pagination: /api/users/page/1, /api/user/page/2...
-const limit = 10;
+const limit = 6;
 router.route('/page/:page')
   .get((req, res, next) => {
-    const offset = req.params.page-1;
-    User.find().skip(offset*limit).limit(limit).exec((err, users) => {
+    const offset = req.params.page - 1;
+    User.find().skip(offset * limit).limit(limit).exec((err, users) => {
       if (err) return next(err)
       return res.json(users)
     })
@@ -31,13 +31,6 @@ router.route('/')
     })
   })
 
-  /**
-   * .get('/:username/:password', function(req, res) {
-     * var newUser = newUser();
-     * newUser.username = req.params.username;
-     * newUser.password = req.params.password;
-     * newUser.save(callback)
-     */
   .post((req, res, next) => {
     User.create(req.body, (err, user) => {
       if (err) return next(err)
@@ -67,9 +60,8 @@ router.route('/')
       })
   })
   .delete((req, res, next) => {
-    // This method is similar to find but instead
-    // it removes all the occurrences
-    User.remove({_id: req.body._id}, (err) => {
+
+    User.deleteOne({_id: req.body._id}, (err) => {
       if (err) return next(err)
 
       return res.status(204).json(req.body._id)
@@ -92,9 +84,8 @@ router.route('/search/:username')
     })
   });
 
-//TODO:
 router.param('id', (req, res, next, id) => {
-  // Handle to find the requested resouce
+
   User.findById(id, (err, user) => {
     if (err) return next(err)
 
@@ -109,6 +100,7 @@ router.param('id', (req, res, next, id) => {
     return next(err)
   })
 });
+
 router.route('/:uid')
   .delete((req, res, next) => {
     User.findByIdAndRemove(req.user._id, (err) => {

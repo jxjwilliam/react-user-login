@@ -1,31 +1,41 @@
 //TODO: "x-access-token": token
-export const getUsers = (page = 1) => {
-  return (dispatch, getState) => {
-    const users = getState().userList;
-    fetch(`/api/list/page/${page}`, {
-      method: 'GET',
-      headers: {
-        "Content-type": "application/json",
-        "Accept": "application/json",
+export const getUsers = (page = 1) => dispatch => {
+
+  return fetch(`/api/list/page/${page}`, {
+    method: 'GET',
+    headers: {
+      "Content-type": "application/json",
+      "Accept": "application/json"
+    }
+  })
+    .then(res => res.json())
+    .then(data => {
+      if (Array.isArray(data)) {
+        dispatch({
+          type: 'FETCH_USERS',
+          payload: data
+        });
       }
-    })
-      .then(res => res.json())
-      .then(data => {
-        if(Array.isArray(data)) {
-          dispatch({
-            type: 'FETCH_USERS',
-            payload: data
-          });
-        }
-        else {
-          dispatch({
-            type: 'FETCH_USERS_FAIL',
-            payload: data
-          });
-        }
-      });
-  }
+      else {
+        dispatch({
+          type: 'FETCH_USERS_FAIL',
+          payload: data
+        });
+      }
+    });
 };
+
+export const getTotal = () => dispatch => {
+
+  return fetch('/api/list/total')
+    .then(res => res.json())
+    .then(data => {
+      dispatch({
+        type: 'FETCH_TOTAL',
+        payload: data
+      })
+    })
+}
 
 export const prevAction = (page) => (dispatch) => {
   fetch(`/api/list/page/${page}`)
@@ -98,10 +108,6 @@ export const deleteUser = user => dispatch => {
 
 export const sortAction = (sortBy, seq) => ({
   type: 'SORT_USERS',
-  sortBy: sortBy, seq: seq
+  sortBy: sortBy,
+  seq: seq
 })
-
-export const searchUser = username => ({
-  type: 'SEARCH_USERS',
-  payload: username
-});

@@ -1,55 +1,56 @@
 import React, {Component} from 'react'
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
-import {Link} from 'react-router-dom'
 import {isEmpty} from '../utils'
 import {
   getUsers,
+  getTotal,
   updateUser,
   saveUser,
   deleteUser,
   prevAction,
   nextAction,
-  sortAction,
-  searchUser
+  sortAction
 } from '../actions/listAction'
 
-class UserSearch extends Component {
+const UserSearch = ({handleSearch}) => (
+  <div className="input-group">
+    <input
+      type="search"
+      className="form-control"
+      placeholder="Search"
+      name="search"
+      onChange={handleSearch}
+    />
+    <div className="input-group-btn">
+      <button className="btn btn-warning" type="button">
+        <i className="fa fa-search-plus"></i>
+      </button>
+    </div>
+  </div>
+)
 
-  handleSearch = e => {
-    const {dispatch, getUsers} = this.props;
-    let username = e.target.value.trim();
-    if (username) {
-      dispatch(searchUser(username));
-    }
-    else {
-      getUsers()
-    }
-  }
+const FieldSearch = ({name, onChange}) => (
+  <div className="input-group">
+    <input
+      type="search"
+      className="form-control"
+      placeholder={name}
+      name="field_search"
+      onChange={onChange}
+    />
+  </div>
+)
 
-  render() {
-    return (
-      <div className="input-group">
-        <input type="search" className="form-control" placeholder="Search" name="search" onChange={this.handleSearch}/>
 
-        <div className="input-group-btn">
-          <button className="btn btn-warning" type="button">
-            <i className="fa fa-search-plus"></i>
-          </button>
-        </div>
-      </div>
-    )
-  }
-}
-UserSearch = connect(null, (dispatch) => bindActionCreators({getUsers, dispatch}, dispatch))(UserSearch);
-
-const Header = ({sort, seq}) => (
+const Header = ({sort, onSearch}) => (
   <thead>
   <tr>
-    <th>#</th>
+    <th scope="row">#</th>
     <th>First Name
       <SortAsc sort={sort} name="firstName"/>
       <SortDesc sort={sort} name="firstName"/>
+      <FieldSearch onChange={onSearch} name="firstName"/>
     </th>
     <th>Last Name
       <SortAsc sort={sort} name="lastName"/>
@@ -87,7 +88,7 @@ const Header = ({sort, seq}) => (
 const Detail = ({idx, user, onEdit, onDelete}) => {
   return (
     <tr>
-      <td scope="row">{idx + 1}</td>
+      <td>{idx + 1}</td>
       <td>{user.firstName}</td>
       <td>{user.lastName}</td>
       <td>
@@ -131,7 +132,8 @@ class List extends Component {
     user: {},
     curr_page: 1,
     total_page: 1,
-    total_users: 0
+    total_users: 0,
+    list: []
   };
 
   prev = () => {
@@ -211,15 +213,38 @@ class List extends Component {
   }
 
   componentDidMount() {
-    this.props.getUsers(); // store.dispatch({type: 'FETCH_USERS'});
+    this.props.getUsers()
+      .then((data) => {
+        console.log(this.props.userList, data);
+        this.setState({list: this.props.userList})
+      });
 
-    fetch('/api/list/total')
-      .then(res => res.json())
-      .then(data => this.setState({total_users: data.total, total_page: Math.ceil(data.total / 10)}))
+    this.props.getTotal()
+      .then(() => {
+        const {total} = this.props.total;
+        this.setState({
+          total_users: total,
+          total_page: Math.ceil(total / 10)
+        })
+      })
+  }
+
+  searchKeyword = (keyword) => {
+    this.state.list.filter(ul => ul.email.indexOf(keyword) !== -1)
+  }
+
+  handleSearch = e => {
+    let search = e.target.value.trim();
+    if (search) {
+      this.searchKeyword(search);
+    }
+    else {
+      this.props.getUsers()
+    }
   }
 
   render() {
-    const {userList} = this.props;
+    const {userList, sortAction} = this.props;
 
     return (
       isEmpty(userList)
@@ -232,7 +257,7 @@ class List extends Component {
                 </button>
               </div>
               <div className="col-md-3">
-                <UserSearch />
+                <UserSearch handleSearch={this.handleSearch}/>
               </div>
               <div className="col-md-2">
                 <a href="#" aria-label="Previous" onClick={this.prev}>
@@ -250,9 +275,9 @@ class List extends Component {
             </div>
             <div className="row" style={{paddingTop: 10}}>
               <table className="table table-bordered">
-                <Header sort={this.props.sortAction}/>
+                <Header sort={sortAction} onSearch={this.handleSearch}/>
                 <tbody>
-                {this.props.userList.map((user, i) => (
+                {userList.map((user, i) => (
                   <Detail
                     key={i}
                     onEdit={this.editModal}
@@ -271,11 +296,13 @@ class List extends Component {
 
 const mapStateToProps = (state, {params}) => ({
   userList: state.userList,
+  total: state.total,
 });
 
 const mapDispatchToProps = (dispatch) => {
   let actions = bindActionCreators({
     getUsers,
+    getTotal,
     updateUser,
     saveUser,
     deleteUser,

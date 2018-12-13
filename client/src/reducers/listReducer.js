@@ -1,5 +1,14 @@
 import orderBy from 'lodash/orderBy'
 
+const totalReducer = (state = [], action) => {
+  switch (action.type) {
+    case 'FETCH_TOTAL':
+      return action.payload;
+    default:
+      return state;
+  }
+}
+
 const userListReducer = (state = [], action) => {
   switch (action.type) {
     case 'FETCH_USERS':
@@ -16,9 +25,13 @@ const userListReducer = (state = [], action) => {
     case 'DELETE_USER':
       return state.filter(s => s._id !== action.payload);
     case 'SEARCH_USERS':
-      return state.filter(s => s.email.indexOf(action.payload) !== -1);
+      return action.payload;
+    default:
+      return state;
   }
-  return state;
 }
 
-export default userListReducer;
+export {
+  totalReducer,
+  userListReducer
+}
