@@ -31,7 +31,16 @@ const userListReducer = (state = [], action) => {
   }
 }
 
+const searchFields = (state, field, keyword) => {
+  return state.filter(ul => {
+    if (ul[field]) {
+      return ul[field].toLowerCase().indexOf(keyword) !== -1
+    }
+  })
+}
+
 export {
   totalReducer,
-  userListReducer
+  userListReducer,
+  searchFields
 }

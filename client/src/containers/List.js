@@ -1,7 +1,7 @@
 import React, {Component} from 'react'
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
-import {isEmpty} from '../utils'
+import {areEqualShallow, isEmpty} from '../utils'
 import {
   getUsers,
   getTotal,
@@ -12,7 +12,26 @@ import {
   nextAction,
   sortAction
 } from '../actions/listAction'
+import {searchFields} from '../reducers/listReducer'
 
+
+const SortAsc = ({sort, name}) => (
+  <a href="#" title={'sort by ' + name} onClick={() => sort(name, 'asc')}>
+    <i className="fa fa-sort-up fa-lg"></i>
+  </a>
+)
+const SortDesc = ({sort, name}) => (
+  <a href="#" title={'sort by ' + name + ' desc'} onClick={() => sort(name, 'desc')}>
+    <i className="fa fa-sort-down fa-lg"></i>
+  </a>
+)
+
+const AddUser = ({onOpen}) => (
+  <button className="btn btn-success" onClick={onOpen}>
+    <i className="fa fa-user-plus"></i>Add User
+  </button>
+
+)
 const UserSearch = ({handleSearch}) => (
   <div className="input-group">
     <input
@@ -30,55 +49,65 @@ const UserSearch = ({handleSearch}) => (
   </div>
 )
 
-const FieldSearch = ({name, onChange}) => (
+let FieldSearch = ({name, onSearch}) => (
   <div className="input-group">
     <input
       type="search"
       className="form-control"
       placeholder={name}
       name="field_search"
-      onChange={onChange}
+      onChange={e => onSearch(e, name)}
     />
   </div>
 )
-
+FieldSearch = connect(
+  state => ({userList: state.userList}),
+  {getUsers}
+)(FieldSearch)
 
 const Header = ({sort, onSearch}) => (
   <thead>
   <tr>
     <th scope="row">#</th>
-    <th>First Name
+    <th><label>First Name</label>
       <SortAsc sort={sort} name="firstName"/>
       <SortDesc sort={sort} name="firstName"/>
-      <FieldSearch onChange={onSearch} name="firstName"/>
+      <FieldSearch onSearch={onSearch} name="firstName"/>
     </th>
-    <th>Last Name
+    <th><label>Last Name</label>
       <SortAsc sort={sort} name="lastName"/>
       <SortDesc sort={sort} name="lastName"/>
+      <FieldSearch onSearch={onSearch} name="lastName"/>
     </th>
-    <th>Email
+    <th><label>Email</label>
       <SortAsc sort={sort} name="email"/>
       <SortDesc sort={sort} name="email"/>
+      <FieldSearch onSearch={onSearch} name="email"/>
     </th>
-    <th>Team
+    <th><label>Team</label>
       <SortAsc sort={sort} name="team"/>
       <SortDesc sort={sort} name="team"/>
+      <FieldSearch onSearch={onSearch} name="team"/>
     </th>
-    <th>Role
+    <th><label>Role</label>
       <SortAsc sort={sort} name="role"/>
       <SortDesc sort={sort} name="role"/>
+      <FieldSearch onSearch={onSearch} name="role"/>
     </th>
-    <th>Location
+    <th><label>Location</label>
       <SortAsc sort={sort} name="location"/>
       <SortDesc sort={sort} name="location"/>
+      <FieldSearch onSearch={onSearch} name="location"/>
     </th>
-    <th>Comment
+    <th><label>Comment</label>
       <SortAsc sort={sort} name="comment"/>
       <SortDesc sort={sort} name="comment"/>
+      <FieldSearch onSearch={onSearch} name="comment"/>
     </th>
-    <th>TS
+    <th><label>TS</label>
       <SortAsc sort={sort} name="timestamp"/>
       <SortDesc sort={sort} name="timestamp"/>
+      <FieldSearch onSearch={onSearch} name="timestamp"/>
     </th>
     <th>Operation</th>
   </tr>
@@ -115,17 +144,6 @@ const Detail = ({idx, user, onEdit, onDelete}) => {
   )
 }
 
-const SortAsc = ({sort, name}) => (
-  <a href="#" title={'sort by ' + name} onClick={() => sort(name, 'asc')}>
-    <i className="fa fa-sort-up fa-lg"></i>
-  </a>
-)
-const SortDesc = ({sort, name}) => (
-  <a href="#" title={'sort by ' + name + ' desc'} onClick={() => sort(name, 'desc')}>
-    <i className="fa fa-sort-down fa-lg"></i>
-  </a>
-)
-
 class List extends Component {
   state = {
     showModal: false,
@@ -133,7 +151,8 @@ class List extends Component {
     curr_page: 1,
     total_page: 1,
     total_users: 0,
-    list: []
+    search: '',
+    field: ''
   };
 
   prev = () => {
@@ -180,22 +199,8 @@ class List extends Component {
     }
   }
 
-  areEqualShallow(a, b) {
-    for (let key in a) {
-      if (!(key in b) || a[key] !== b[key]) {
-        return false;
-      }
-    }
-    for (let key in b) {
-      if (!(key in a)) {
-        return false;
-      }
-    }
-    return true;
-  }
-
   doUser = values => {
-    if (this.areEqualShallow(values, this.state.user)) {
+    if (areEqualShallow(values, this.state.user)) {
       console.log('doUser - nothing change: values === this.state.user');
       this.setState({showModal: false, user: {}});
       return false;
@@ -214,10 +219,6 @@ class List extends Component {
 
   componentDidMount() {
     this.props.getUsers()
-      .then((data) => {
-        console.log(this.props.userList, data);
-        this.setState({list: this.props.userList})
-      });
 
     this.props.getTotal()
       .then(() => {
@@ -230,21 +231,29 @@ class List extends Component {
   }
 
   searchKeyword = (keyword) => {
-    this.state.list.filter(ul => ul.email.indexOf(keyword) !== -1)
+    // this.state.list.filter(ul => ul.email.indexOf(keyword) !== -1)
   }
 
-  handleSearch = e => {
-    let search = e.target.value.trim();
-    if (search) {
-      this.searchKeyword(search);
+  handleSearch = (e, field) => {
+    let keyword = e.target.value;
+    if (keyword) {
+      this.setState({search: keyword.trim().toLowerCase(), field: field})
     }
     else {
-      this.props.getUsers()
+      this.setState({search: '', field: ''})
     }
   }
 
   render() {
     const {userList, sortAction} = this.props;
+    const {search, field} = this.state;
+    let list;
+    if (field && search) {
+      list = searchFields(userList, field, search);
+    }
+    else {
+      list = userList;
+    }
 
     return (
       isEmpty(userList)
@@ -252,9 +261,7 @@ class List extends Component {
           <div className="container" style={{paddingTop: 48}}>
             <div className="row">
               <div className="col-md-2">
-                <button className="btn btn-success" onClick={this.open}>
-                  <i className="fa fa-user-plus"></i>Add User
-                </button>
+                <AddUser onOpen={this.open}/>
               </div>
               <div className="col-md-3">
                 <UserSearch handleSearch={this.handleSearch}/>
@@ -270,14 +277,17 @@ class List extends Component {
                 </a>
               </div>
               <div>
-                <span>Page <strong>{this.state.curr_page}</strong> of <strong>{this.state.total_page}</strong>, totoal <strong>{this.state.total_users}</strong> users</span>
+                <span>
+                  Page <strong>{this.state.curr_page}</strong> of <strong>{this.state.total_page}</strong>,
+                  total <strong>{this.state.total_users}</strong> users
+                </span>
               </div>
             </div>
             <div className="row" style={{paddingTop: 10}}>
               <table className="table table-bordered">
                 <Header sort={sortAction} onSearch={this.handleSearch}/>
                 <tbody>
-                {userList.map((user, i) => (
+                {list.map((user, i) => (
                   <Detail
                     key={i}
                     onEdit={this.editModal}
@@ -294,10 +304,12 @@ class List extends Component {
   }
 }
 
-const mapStateToProps = (state, {params}) => ({
-  userList: state.userList,
-  total: state.total,
-});
+const mapStateToProps = (state, ownProps) => {
+  return {
+    userList: state.userList,
+    total: state.total,
+  }
+}
 
 const mapDispatchToProps = (dispatch) => {
   let actions = bindActionCreators({
