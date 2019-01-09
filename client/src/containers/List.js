@@ -16,14 +16,22 @@ import {searchFields} from '../reducers/listReducer'
 
 
 const SortAsc = ({sort, name}) => (
-  <a href="#" title={'sort by ' + name} onClick={() => sort(name, 'asc')}>
+  <button
+    type="button"
+    title={'sort by ' + name}
+    className="link-button"
+    onClick={() => sort(name, 'asc')}>
     <i className="fa fa-sort-up fa-lg"></i>
-  </a>
+  </button>
 )
 const SortDesc = ({sort, name}) => (
-  <a href="#" title={'sort by ' + name + ' desc'} onClick={() => sort(name, 'desc')}>
+  <button
+    type="button"
+    title={'sort by ' + name + ' desc'}
+    className="link-button"
+    onClick={() => sort(name, 'desc')}>
     <i className="fa fa-sort-down fa-lg"></i>
-  </a>
+  </button>
 )
 
 const AddUser = ({onOpen}) => (
@@ -267,14 +275,21 @@ class List extends Component {
                 <UserSearch handleSearch={this.handleSearch}/>
               </div>
               <div className="col-md-2">
-                <a href="#" aria-label="Previous" onClick={this.prev}>
+                <button
+                  type="button"
+                  className="link-button"
+                  aria-label="Previous"
+                  onClick={this.prev}>
                   <i className="fa fa-backward">Prev</i>
-                </a>
+                </button>
               </div>
               <div className="col-md-2">
-                <a href="#" aria-label="Next" onClick={this.next}>
+                <button
+                  type="button"
+                  className="link-button"
+                  aria-label="Next" onClick={this.next}>
                   <i className="fa fa-forward">Next</i>
-                </a>
+                </button>
               </div>
               <div>
                 <span>
