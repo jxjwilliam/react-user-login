@@ -15,6 +15,22 @@ $ open localhost:8888/
 
 Here it goes!
 
+More Start
+----------
+
+```bash
+$ mongod &
+$ cd client && yarn start
+$ npm run server
+$ open localhost:3000/
+```
+
+or:
+```bash
+$ mongod &
+$ npm run dev
+$ open localhost:3000/
+```
 
 MERN fullstack technology
 --------------------------

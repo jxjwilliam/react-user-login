@@ -68,15 +68,20 @@ router.route('/')
     })
   });
 
-router.route('/search/:username')
+
+/**
+ * 1. only [:keyword] is not empty
+ * 2. fetch all results, no pagination
+ */
+router.route('/search/:keyword')
   .get((req, res, next) => {
-
-    var reg = new RegExp(req.params.username, 'i');
-
+    var search = req.params.keyword;
+    var reg = new RegExp(req.params.keyword, 'i');
     User.find({
       '$or': [
         {firstName: reg},
-        {lastName: reg}
+        {lastName: reg},
+        {email: reg}
       ]
     }).exec((err, users) => {
       if (err) return next(err)
@@ -84,8 +89,8 @@ router.route('/search/:username')
     })
   });
 
-router.param('id', (req, res, next, id) => {
 
+router.param('id', (req, res, next, id) => {
   User.findById(id, (err, user) => {
     if (err) return next(err)
 

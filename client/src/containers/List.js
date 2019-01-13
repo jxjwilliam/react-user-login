@@ -2,18 +2,9 @@ import React, {Component} from 'react'
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
 import {areEqualShallow, isEmpty} from '../utils'
-import {
-  getUsers,
-  getTotal,
-  updateUser,
-  saveUser,
-  deleteUser,
-  prevAction,
-  nextAction,
-  sortAction
-} from '../actions/listAction'
+import * as ListAction from '../actions/listAction'
 import {searchFields} from '../reducers/listReducer'
-
+import Searchbox from '../components/Search'
 
 const SortAsc = ({sort, name}) => (
   <button
@@ -38,23 +29,6 @@ const AddUser = ({onOpen}) => (
   <button className="btn btn-success" onClick={onOpen}>
     <i className="fa fa-user-plus"></i>Add User
   </button>
-
-)
-const UserSearch = ({handleSearch}) => (
-  <div className="input-group">
-    <input
-      type="search"
-      className="form-control"
-      placeholder="Search"
-      name="search"
-      onChange={handleSearch}
-    />
-    <div className="input-group-btn">
-      <button className="btn btn-warning" type="button">
-        <i className="fa fa-search-plus"></i>
-      </button>
-    </div>
-  </div>
 )
 
 let FieldSearch = ({name, onSearch}) => (
@@ -64,13 +38,14 @@ let FieldSearch = ({name, onSearch}) => (
       className="form-control"
       placeholder={name}
       name="field_search"
+      title="search in this page"
       onChange={e => onSearch(e, name)}
     />
   </div>
 )
 FieldSearch = connect(
   state => ({userList: state.userList}),
-  {getUsers}
+  {getUsers: ListAction.getUsers}
 )(FieldSearch)
 
 const Header = ({sort, onSearch}) => (
@@ -159,8 +134,9 @@ class List extends Component {
     curr_page: 1,
     total_page: 1,
     total_users: 0,
-    search: '',
-    field: ''
+    search_value: '',
+    search_field: '',
+    is_loaded: false
   };
 
   prev = () => {
@@ -222,49 +198,58 @@ class List extends Component {
       this.props.updateUser(values);
     }
     this.setState({showModal: false, user: {}})
-    // what need to dispatch? return this.props.dispatch();
   }
 
   componentDidMount() {
-    this.props.getUsers()
+    this.props.getUsers(1)
 
     this.props.getTotal()
       .then(() => {
         const {total} = this.props.total;
         this.setState({
           total_users: total,
-          total_page: Math.ceil(total / 10)
+          total_page: Math.ceil(total / 6)
         })
       })
-  }
-
-  searchKeyword = (keyword) => {
-    // this.state.list.filter(ul => ul.email.indexOf(keyword) !== -1)
   }
 
   handleSearch = (e, field) => {
     let keyword = e.target.value;
     if (keyword) {
-      this.setState({search: keyword.trim().toLowerCase(), field: field})
+      this.setState({search_value: keyword.trim().toLowerCase(), search_field: field})
     }
     else {
-      this.setState({search: '', field: ''})
+      this.setState({search_value: '', search_field: ''})
+    }
+    e.preventDefault();
+  }
+
+  handleGlobalSearch = value => {
+    // if value is not empty, then do ajax call.
+    if (value) {
+      this.props.searchUsers(value)
+        .then(() => this.setState({is_loaded: true}));
+    }
+    // otherwise, reset to original page.
+    else {
+      this.props.getUsers(this.state.curr_page);
     }
   }
 
   render() {
     const {userList, sortAction} = this.props;
-    const {search, field} = this.state;
-    let list;
-    if (field && search) {
-      list = searchFields(userList, field, search);
+    const {search_value, search_field} = this.state;
+    let list = [], total_idx = 0;
+    if (search_field && search_value) {
+      list = searchFields(userList, search_field, search_value);
     }
     else {
       list = userList;
+      total_idx = (this.state.curr_page - 1) * 6;
     }
 
     return (
-      isEmpty(userList)
+      isEmpty(userList) && !this.state.is_loaded
         ? <div className="loader"/> : (
           <div className="container" style={{paddingTop: 48}}>
             <div className="row">
@@ -272,7 +257,7 @@ class List extends Component {
                 <AddUser onOpen={this.open}/>
               </div>
               <div className="col-md-3">
-                <UserSearch handleSearch={this.handleSearch}/>
+                <Searchbox onChange={this.handleGlobalSearch}/>
               </div>
               <div className="col-md-2">
                 <button
@@ -304,11 +289,11 @@ class List extends Component {
                 <tbody>
                 {list.map((user, i) => (
                   <Detail
-                    key={i}
+                    key={i + total_idx}
                     onEdit={this.editModal}
                     onDelete={this.deleteModal}
                     user={user}
-                    idx={i}
+                    idx={i + total_idx}
                   />
                 ))}
                 </tbody>
@@ -327,16 +312,7 @@ const mapStateToProps = (state, ownProps) => {
 }
 
 const mapDispatchToProps = (dispatch) => {
-  let actions = bindActionCreators({
-    getUsers,
-    getTotal,
-    updateUser,
-    saveUser,
-    deleteUser,
-    prevAction,
-    nextAction,
-    sortAction
-  }, dispatch);
+  let actions = bindActionCreators(ListAction, dispatch);
   return {...actions, dispatch};
 }
 

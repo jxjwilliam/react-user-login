@@ -1,10 +1,11 @@
 import React, {Fragment} from 'react'
 
 export const loadingDefer = ms => {
-  return new Promise((resolve, reject) => {
+  const promise = new Promise((resolve, reject) => {
     ms = ms || 2000; //default is 2 seconds
     setTimeout(() => resolve('user-login'), ms);
   })
+  return promise;
 }
 
 export const isEmpty = prop => {
@@ -55,7 +56,7 @@ export const displayReduxData = data => {
     displayData = data.reduce((memo, d, i) => {
       memo.push(
         <code key={`d${i}`}>
-          {JSON.stringify(d)}
+          {JSON.stringify(d, null, 2)}
         </code>
       )
       return memo;
@@ -64,7 +65,7 @@ export const displayReduxData = data => {
   else {
     displayData = (
       <code>
-        {JSON.stringify(data)}
+        {JSON.stringify(data, null, 2)}
       </code>
     )
   }
