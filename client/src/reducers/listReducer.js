@@ -4,6 +4,8 @@ const totalReducer = (state = [], action) => {
   switch (action.type) {
     case 'FETCH_TOTAL':
       return action.payload;
+    case 'FETCH_TOTAL_FAIL':
+      return action.error
     default:
       return state;
   }
@@ -25,10 +27,16 @@ const userListReducer = (state = [], action) => {
       return orderBy(state, [action.sortBy], [action.seq]);
     case 'UPDATE_USER':
       return state.map(s => s._id === action.payload._id ? action.payload : s)
+    case 'UPDATE_USER_FAIL':
+      return action.error;
     case 'ADD_USER':
       return [action.payload].concat(state)
     case 'DELETE_USER':
-      return state.filter(s => s._id !== action.payload);
+      console.log(action);
+      return state.filter(s => s._id !== action.payload.id);
+    case 'DELETE_USER_FAIL':
+      console.error(action.error)
+      return state;
     case 'SEARCH_USERS':
       return action.payload;
     case 'SEARCH_USERS_FAIL':

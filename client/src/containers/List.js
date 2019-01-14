@@ -97,14 +97,19 @@ const Header = ({sort, onSearch}) => (
   </thead>
 )
 
+/**
+ * user.firstName, userLastName could be undefined? email is mandatory and unique.
+ */
 const Detail = ({idx, user, onEdit, onDelete}) => {
+  const {firstName, lastName, email} = user;
+  let info = (firstName && lastName) ? firstName + ' ' + lastName : email;
   return (
     <tr>
       <td>{idx + 1}</td>
-      <td>{user.firstName}</td>
-      <td>{user.lastName}</td>
+      <td>{firstName}</td>
+      <td>{lastName}</td>
       <td>
-        <button onClick={() => onEdit(user._id)}>{user.email}</button>
+        <button onClick={() => onEdit(user._id)}>{email}</button>
       </td>
       <td>{user.team.join(', ')}</td>
       <td>{user.role}</td>
@@ -112,14 +117,18 @@ const Detail = ({idx, user, onEdit, onDelete}) => {
       <td>{user.comment}</td>
       <td>{user.timestamp.slice(0, 10).replace(/-/g, '/')}</td>
       <td>
-        <button className="btn btn-warning"
-                onClick={() => onEdit(user._id)}
-                title={'eidt ' + user.firstName + ' ' + user.lastName}>
+        <button
+          className="btn btn-warning"
+          onClick={() => onEdit(user._id)}
+          title={`eidt ${info}`}
+        >
           <i className="fa fa-edit"></i>
         </button>
-        <button className="btn btn-danger"
-                onClick={() => onDelete(user._id)}
-                title={'remove ' + user.firstName + ' ' + user.lastName}>
+        <button
+          className="btn btn-danger"
+          onClick={() => onDelete(user._id)}
+          title={`remove  ${info}`}
+        >
           <i className="fa fa-trash"></i>
         </button>
       </td>
@@ -171,15 +180,31 @@ class List extends Component {
     this.setState({showModal: false, user: {}});
   }
 
+  displayInfo(fname, lname, email) {
+    return (fname && lname) ? fname + ' ' + lname : email;
+  }
+
   editModal = id => {
     let theUser = this.props.userList.find(user => user._id === id);
     this.setState({user: theUser, showModal: true});
   }
 
+  /** when delete, not pass the whole user object as body, only need _id, email. */
   deleteModal = id => {
     let theUser = this.props.userList.find(user => user._id === id);
-    if (window.confirm('Are you sure to delete ' + theUser.firstName + ' ' + theUser.lastName + '?')) {
-      this.props.deleteUser(theUser);
+    let info = this.displayInfo(theUser.firstName, theUser.lastName, theUser.email);
+    if (window.confirm('Are you sure to delete ' + info + '?')) {
+      this.props.deleteUser({id: theUser._id, email: theUser.email})
+        .then(() => {
+          this.props.getTotal()
+            .then(() => {
+              const {total} = this.props.total;
+              this.setState({
+                total_users: total,
+                total_page: Math.ceil(total / 6)
+              })
+            });
+        })
     }
   }
 

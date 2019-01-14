@@ -76,16 +76,22 @@ export const saveUser = user => dispatch => {
 }
 
 export const deleteUser = user => dispatch => {
-  fetch('/api/list', {
+  return fetch('/api/list', {
     method: 'DELETE',
     headers: {
-      'Accept': 'application/json'
+      'Accept': 'application/json',
+      'Content-Type': 'application/json'
     },
     body: JSON.stringify(user)
   })
-    .then(res => res.json())
+    .then(res => {
+      // case: 204 No Content
+      // res.status is integer, not string.
+      if (res.status === 204 && res.statusText === "No Content") return 'successful'
+      return res.json()
+    })
     .then(
-      (data) => dispatch({type: 'DELETE_USER', payload: data}),
+      (data) =>  dispatch({type: 'DELETE_USER', payload: user}),
       (error) => dispatch({type: 'DELETE_USER_FAIL', error}));
 }
 

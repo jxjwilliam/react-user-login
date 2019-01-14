@@ -60,11 +60,13 @@ router.route('/')
       })
   })
   .delete((req, res, next) => {
-
-    User.deleteOne({_id: req.body._id}, (err) => {
+    console.log('delete body object:', req.body)
+    /**
+     * req.body include: id and email. delete by id or email?
+     */
+    User.deleteOne({_id: req.body.id}, (err) => {
       if (err) return next(err)
-
-      return res.status(204).json(req.body._id)
+      res.status(204).end()
     })
   });
 
@@ -108,10 +110,11 @@ router.param('id', (req, res, next, id) => {
 
 router.route('/:uid')
   .delete((req, res, next) => {
-    User.findByIdAndRemove(req.user._id, (err) => {
-      if (err) return next(err)
+    console.log('should not be here...')
 
-      console.log('should not be here...');
+    User.findByIdAndRemove(req.user._id, (err) => {
+      if (err) return next(err);
+
       res.status(204).end()
     })
   })
