@@ -1,21 +1,22 @@
 const router = require('express').Router()
 const User = require('../models/loginUser')
 
+const LIMIT = 6;
+
 //total items:
 router.route('/total')
   .get((req, res, next) => {
     User.countDocuments({}, (err, count) => {
       if (err) return next(err)
-      return res.json({total: count})
+      return res.json({total: count, limit: LIMIT})
     })
   });
 
 // pagination: /api/users/page/1, /api/user/page/2...
-const limit = 6;
 router.route('/page/:page')
   .get((req, res, next) => {
     const offset = req.params.page - 1;
-    User.find().skip(offset * limit).limit(limit).exec((err, users) => {
+    User.find().skip(offset * LIMIT).limit(LIMIT).exec((err, users) => {
       if (err) return next(err)
       return res.json(users)
     })

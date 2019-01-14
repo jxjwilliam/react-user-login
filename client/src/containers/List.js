@@ -5,6 +5,7 @@ import {areEqualShallow, isEmpty} from '../utils'
 import * as ListAction from '../actions/listAction'
 import {searchFields} from '../reducers/listReducer'
 import Searchbox from '../components/Search'
+import EditModal from '../components/ModalForm'
 
 const SortAsc = ({sort, name}) => (
   <button
@@ -145,7 +146,7 @@ class List extends Component {
     total_users: 0,
     search_value: '',
     search_field: '',
-    is_loaded: false
+    done: false
   };
 
   prev = () => {
@@ -189,22 +190,25 @@ class List extends Component {
     this.setState({user: theUser, showModal: true});
   }
 
+
+  //this.props.total: {total: 7, limit: 6}
+  updateTotal = () => {
+    console.log(this.props.total)
+    const {total, limit} = this.props.total;
+    this.setState({
+      total_users: total,
+      total_page: Math.ceil(total / limit)
+    })
+  }
+
   /** when delete, not pass the whole user object as body, only need _id, email. */
   deleteModal = id => {
     let theUser = this.props.userList.find(user => user._id === id);
     let info = this.displayInfo(theUser.firstName, theUser.lastName, theUser.email);
     if (window.confirm('Are you sure to delete ' + info + '?')) {
       this.props.deleteUser({id: theUser._id, email: theUser.email})
-        .then(() => {
-          this.props.getTotal()
-            .then(() => {
-              const {total} = this.props.total;
-              this.setState({
-                total_users: total,
-                total_page: Math.ceil(total / 6)
-              })
-            });
-        })
+        .then(this.props.getTotal)
+        .then(this.updateTotal);
     }
   }
 
@@ -229,13 +233,7 @@ class List extends Component {
     this.props.getUsers(1)
 
     this.props.getTotal()
-      .then(() => {
-        const {total} = this.props.total;
-        this.setState({
-          total_users: total,
-          total_page: Math.ceil(total / 6)
-        })
-      })
+      .then(this.updateTotal)
   }
 
   handleSearch = (e, field) => {
@@ -253,7 +251,7 @@ class List extends Component {
     // if value is not empty, then do ajax call.
     if (value) {
       this.props.searchUsers(value)
-        .then(() => this.setState({is_loaded: true}));
+        .then(() => this.setState({done: true}));
     }
     // otherwise, reset to original page.
     else {
@@ -270,11 +268,12 @@ class List extends Component {
     }
     else {
       list = userList;
-      total_idx = (this.state.curr_page - 1) * 6;
+      const limit = this.props.total.limit ? this.props.total.limit : 6;
+      total_idx = (this.state.curr_page - 1) * limit;
     }
 
     return (
-      isEmpty(userList) && !this.state.is_loaded
+      isEmpty(userList) && !this.state.done
         ? <div className="loader"/> : (
           <div className="container" style={{paddingTop: 48}}>
             <div className="row">
@@ -324,6 +323,13 @@ class List extends Component {
                 </tbody>
               </table>
             </div>
+            {/*<div className="modal">*/}
+              {/*<EditModal*/}
+                {/*show={this.state.showModal}*/}
+                {/*close={this.close}*/}
+                {/*onUpdate={this.doUser}*/}
+                {/*user={this.state.user}/>*/}
+            {/*</div>*/}
           </div>
         ))
   }
