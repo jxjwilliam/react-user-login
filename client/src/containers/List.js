@@ -5,7 +5,7 @@ import {areEqualShallow, isEmpty} from '../utils'
 import * as ListAction from '../actions/listAction'
 import {searchFields} from '../reducers/listReducer'
 import Searchbox from '../components/Search'
-import EditModal from '../components/ModalForm'
+import AddEditModal from '../components/ModalForm'
 
 const SortAsc = ({sort, name}) => (
   <button
@@ -181,38 +181,8 @@ class List extends Component {
     this.setState({showModal: false, user: {}});
   }
 
-  displayInfo(fname, lname, email) {
-    return (fname && lname) ? fname + ' ' + lname : email;
-  }
-
-  editModal = id => {
-    let theUser = this.props.userList.find(user => user._id === id);
-    this.setState({user: theUser, showModal: true});
-  }
-
-
-  //this.props.total: {total: 7, limit: 6}
-  updateTotal = () => {
-    console.log(this.props.total)
-    const {total, limit} = this.props.total;
-    this.setState({
-      total_users: total,
-      total_page: Math.ceil(total / limit)
-    })
-  }
-
-  /** when delete, not pass the whole user object as body, only need _id, email. */
-  deleteModal = id => {
-    let theUser = this.props.userList.find(user => user._id === id);
-    let info = this.displayInfo(theUser.firstName, theUser.lastName, theUser.email);
-    if (window.confirm('Are you sure to delete ' + info + '?')) {
-      this.props.deleteUser({id: theUser._id, email: theUser.email})
-        .then(this.props.getTotal)
-        .then(this.updateTotal);
-    }
-  }
-
   doUser = values => {
+    debugger;
     if (areEqualShallow(values, this.state.user)) {
       console.log('doUser - nothing change: values === this.state.user');
       this.setState({showModal: false, user: {}});
@@ -227,6 +197,36 @@ class List extends Component {
       this.props.updateUser(values);
     }
     this.setState({showModal: false, user: {}})
+  }
+
+  editModal = id => {
+    let theUser = this.props.userList.find(user => user._id === id);
+    this.setState({user: theUser, showModal: true});
+  }
+
+
+  //this.props.total={total: 7, limit: 6}
+  updateTotal = () => {
+    const {total, limit} = this.props.total;
+    this.setState({
+      total_users: total,
+      total_page: Math.ceil(total / limit)
+    })
+  }
+
+  displayInfo(fname, lname, email) {
+    return (fname && lname) ? fname + ' ' + lname : email;
+  }
+
+  /** when delete, not pass the whole user object as body, only need _id, email. */
+  deleteModal = id => {
+    let theUser = this.props.userList.find(user => user._id === id);
+    let info = this.displayInfo(theUser.firstName, theUser.lastName, theUser.email);
+    if (window.confirm('Are you sure to delete ' + info + '?')) {
+      this.props.deleteUser({id: theUser._id, email: theUser.email})
+        .then(this.props.getTotal)
+        .then(this.updateTotal);
+    }
   }
 
   componentDidMount() {
@@ -323,13 +323,13 @@ class List extends Component {
                 </tbody>
               </table>
             </div>
-            {/*<div className="modal">*/}
-              {/*<EditModal*/}
-                {/*show={this.state.showModal}*/}
-                {/*close={this.close}*/}
-                {/*onUpdate={this.doUser}*/}
-                {/*user={this.state.user}/>*/}
-            {/*</div>*/}
+            <div className="modal-123">
+              <AddEditModal
+                show={this.state.showModal}
+                close={this.close}
+                onUpdate={this.doUser}
+                user={this.state.user}/>
+            </div>
           </div>
         ))
   }

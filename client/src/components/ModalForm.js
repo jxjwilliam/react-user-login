@@ -1,61 +1,189 @@
 import React from 'react'
-import { Modal, Button } from "react-bootstrap";
-import { Field, reduxForm } from 'redux-form'
-import { connect } from 'react-redux'
+import {Modal, Button} from "react-bootstrap";
+import {Field, reduxForm} from 'redux-form'
+import {connect} from 'react-redux'
 
-const EditModal = ({show, close, onUpdate, user}) => {
-  return (
-    <Modal show={show} onHide={close}>
-      <Modal.Header closeButton>
-        <Modal.Title>Modal heading</Modal.Title>
-      </Modal.Header>
-
-      <Modal.Body>
-        <EditForm onSubmit={onUpdate} user={user}/>
-      </Modal.Body>
-
-      <Modal.Footer>
-        <Button onClick={close}>Close</Button>
-      </Modal.Footer>
-    </Modal>
-  )
-}
-
-const beforeSubmit = (values) => {
-  console.log(values);
-};
-//<Field component={(props)=><input type="text" placeholder="Last Name" value={props.user.lastName} onChange={()=>{}} .../>
-const renderField = ({input, label}) => {
-  return (
-    <div>
-      <label>{label}</label>
-
-      <div>
-        <input type="text" {...input} placeholder={label} />
-      </div>
-    </div>
-  )
-};
 /**
- * handleSubmit(values => { this.props.onSubmit({...values, myField: event.target.value});})();add parentheses here
- * <form onSubmit={handleSubmit(beforeSubmit)}>
+ * ${ this.props.className }
+ * fade:not(.show) { opacity: 0; }
+ * <div role="dialog" tabindex="-1" class="fade show in modal" style="display: block;">
  */
+const AddEditModal = ({show, close, onUpdate, user}) => (
+  <Modal
+    show={show}
+    className={show ? "show" : ''}
+    onHide={close}
+  >
+    <Modal.Header closeButton>
+      <Modal.Title>{user.email ? user.email : 'Add User'}</Modal.Title>
+    </Modal.Header>
+
+    <Modal.Body>
+      <EditForm onSubmit={onUpdate} user={user}/>
+    </Modal.Body>
+
+    <Modal.Footer>
+      <Button onClick={close}>Close</Button>
+    </Modal.Footer>
+  </Modal>
+)
+
 let EditForm = (props) => {
-  const { handleSubmit, pristine, reset, submitting } = props;
-  const user = props.user || {};
+  const {handleSubmit, user, pristine, reset, submitting} = props;
   return (
-    <div className="row well" style={{marginTop:20}}>
+    <div className="row" style={{marginTop: 40, paddingLeft: 40}}>
       <form onSubmit={ handleSubmit }>
         <div>
-          <Field name="firstName" label="First Name" component={renderField} onChange={()=>{}}/>
-          <Field name="lastName"  label="Last Name" component={renderField} onChange={()=>{}}/>
-          <Field name="email" label="Email" component={renderField} onChange={()=>{}}/>
-          <Field name="role" label="Phone" component={renderField} onChange={()=>{}}/>
-          <Field name="location" label="Date of Birth" component={renderField} onChange={()=>{}}/>
-          <Field name="comment" user={user} component={props=><input type="hidden" name="id" value={user._id} />}/>
+          <label htmlFor="firstName">First Name</label>
+          <div>
+            <Field
+              className="input"
+              name="firstName"
+              component="input"
+              type="text"
+              placeholder="First Name"
+              value={user.firstName}
+            />
+          </div>
         </div>
         <div>
-          <button type="submit" className="btn btn-primary" disabled={submitting}>Update</button>
+          <label htmlFor="lastName">Last Name</label>
+          <div>
+            <Field
+              name="lastName"
+              component="input"
+              type="text"
+              placeholder="Last Name"
+              value={user.lastName}
+            />
+          </div>
+        </div>
+        { !user.email && (
+          <div>
+            <label htmlFor="email">Email</label>
+            <div>
+              <Field
+                name="email"
+                component="input"
+                type="email"
+                placeholder="Email"
+                value={user.email}
+              />
+            </div>
+          </div>
+        )}
+        <div>
+          <label htmlFor="Development_Team">Team</label>
+          <div>
+            <label>
+              <Field
+                name="team"
+                id="Development_Team"
+                component="input"
+                type="checkbox"
+              />{' '}
+              Development Team
+            </label>
+          </div>
+          <div>
+            <label htmlFor="Support_Group">Support Group</label>
+            <div>
+              <label>
+                <Field
+                  name="team"
+                  id="Support_Group"
+                  component="input"
+                  type="checkbox"
+                />{' '}
+                Support_Group
+              </label>
+            </div>
+          </div>
+          <div>
+            <label htmlFor="Admin">Admin</label>
+            <div>
+              <label>
+                <Field
+                  name="team"
+                  id="Admin"
+                  component="input"
+                  type="checkbox"
+                />{' '}
+                Admin
+              </label>
+            </div>
+          </div>
+        </div>
+        <div>
+          <label>Role</label>
+          <div>
+            <label>
+              <Field
+                name="role"
+                component="input"
+                type="radio"
+                value="Scrum Master"
+              />{' '}
+              Scrum Master
+            </label>
+            <label>
+              <Field
+                name="role"
+                component="input"
+                type="radio"
+                value="Project Manager"
+              />{' '}
+              Project Manager
+            </label>
+            <label>
+              <Field
+                name="role"
+                component="input"
+                type="radio"
+                value="Business Analyst"
+              />{' '}
+              Business Analyst
+            </label>
+          </div>
+        </div>
+        <div>
+          <label>Location</label>
+          <div>
+            <Field
+              name="location"
+              component="select"
+              value={user.location}
+            >
+              <option value="select">-- location --</option>
+              <option value="HK">HK</option>
+              <option value="GZ">GZ</option>
+              <option value="XZ">XZ</option>
+              <option value="Other">Other</option>
+            </Field>
+          </div>
+        </div>
+        <div>
+          <label htmlFor="comment">Comment</label>
+          <div>
+            <Field
+              name="comment"
+              component="textarea"
+              value={user.comment}
+            />
+          </div>
+        </div>
+        <div>
+          <div>
+            <Field
+              name="id"
+              component="input"
+              type="hidden"
+              value={user._id}
+            />
+          </div>
+        </div>
+        <div>
+          <button type="submit" className="btn btn-primary" disabled={pristine || submitting}>Update</button>
           <button type="button" className="btn btn-warning" disabled={pristine || submitting} onClick={reset}>Clear
             Values
           </button>
@@ -63,7 +191,7 @@ let EditForm = (props) => {
       </form>
     </div>
   )
-};
+}
 
 function mapStateToProps(state, ownProps) {
   return {
@@ -71,11 +199,8 @@ function mapStateToProps(state, ownProps) {
   }
 }
 
-EditForm = reduxForm({
-  form: 'editForm'  // a unique identifier for this form
-})(EditForm)
+EditForm = connect(mapStateToProps)(reduxForm({
+  form: 'add_modify_User'  // an unique identifier for this form
+})(EditForm))
 
-//state => ({initialValues: state.userList[0]})
-EditForm = connect(mapStateToProps)(EditForm);
-
-export default EditModal;
+export default AddEditModal

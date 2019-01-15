@@ -15,12 +15,21 @@ class Searchbox extends React.Component {
 
   render() {
     return (
-      <input
-        type="text"
-        onChange={this.handleChange}
-        placeholder="Search..."
-        defaultValue={this.props.value}
-      />
+      <div className="input-group">
+        <input
+          type="search"
+          className="form-control"
+          placeholder="Search..."
+          name="global_search"
+          alt="search all data source"
+          onChange={this.handleChange}
+        />
+        <div className="input-group-btn">
+          <button className="btn btn-warning" type="button">
+            <i className="fa fa-search-plus"></i>
+          </button>
+        </div>
+      </div>
     );
   }
 
@@ -35,23 +44,5 @@ class Searchbox extends React.Component {
     this.props.onChange(value);
   }
 }
-
-const UserSearch = ({handleSearch}) => (
-  <div className="input-group">
-    <input
-      type="search"
-      className="form-control"
-      placeholder="Search"
-      name="global_search"
-      title="search all data source"
-      onChange={handleSearch}
-    />
-    <div className="input-group-btn">
-      <button className="btn btn-warning" type="button">
-        <i className="fa fa-search-plus"></i>
-      </button>
-    </div>
-  </div>
-)
 
 export default Searchbox;

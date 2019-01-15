@@ -1,6 +1,7 @@
 import {combineReducers} from 'redux'
 import jwt_decode from 'jwt-decode'
 import {totalReducer, userListReducer} from './listReducer'
+import { reducer as formReducer } from 'redux-form'
 
 const loginReducer = (state = {}, action) => {
   switch (action.type) {
@@ -44,5 +45,7 @@ export default combineReducers({
   signup: signupReducer,
   user: userReducer,
   total: totalReducer,
-  userList: userListReducer
+  userList: userListReducer,
+  //to use redux-form, you have to pass formReducer under 'form' key
+  form: formReducer
 })

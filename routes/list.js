@@ -40,20 +40,18 @@ router.route('/')
   })
 
   .put((req, res, next) => {
-    console.log('User:findByIdAndUpdate:', req.body);
+    const {firstName, lastName, email, team, role, location, comment} = req.body;
+    const data = {
+      firstName,
+      lastName,
+      role,
+      team,
+      location,
+      comment,
+      email
+    }
 
-    User.findByIdAndUpdate(req.body._id,
-      {
-        $set: {
-          firstName: req.body.firstName,
-          lastName: req.body.lastName,
-          email: req.body.email,
-          location: req.body.location,
-          comment: req.body.comment,
-        }
-      }, {
-        new: true
-      },
+    User.findOneAndUpdate({_id: req.body._id}, {$set: data}, {new: true},
       (err, user) => {
         if (err) return next(err)
 
@@ -61,7 +59,6 @@ router.route('/')
       })
   })
   .delete((req, res, next) => {
-    console.log('delete body object:', req.body)
     /**
      * req.body include: id and email. delete by id or email?
      */

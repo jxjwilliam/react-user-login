@@ -48,10 +48,12 @@ export const searchUsers = keyword => dispatch => {
 }
 
 export const updateUser = user => dispatch => {
+  debugger
   fetch('/api/list', {
     method: 'PUT',
     headers: {
-      'Accept': 'application/json'
+      'Accept': 'application/json',
+      'Content-Type': 'application/json'
     },
     body: JSON.stringify(user)
   })
@@ -65,6 +67,7 @@ export const saveUser = user => dispatch => {
   fetch('/api/list', {
     method: 'POST',
     headers: {
+      "Content-type": "application/json",
       'Accept': 'application/json'
     },
     body: JSON.stringify(user)
