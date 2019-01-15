@@ -1,8 +1,8 @@
 const router = require('express').Router()
 const User = require('../models/loginUser')
-
 const LIMIT = 6;
 
+//https://scotch.io/tutorials/using-mongoosejs-in-node-js-and-mongodb-applications
 //total items:
 router.route('/total')
   .get((req, res, next) => {
@@ -33,9 +33,15 @@ router.route('/')
   })
 
   .post((req, res, next) => {
-    User.create(req.body, (err, user) => {
+
+    var user = new User(req.body);
+    user.password = user.generateHash(req.body.password)
+
+    user.save((err, nuser) => {
       if (err) return next(err)
-      return res.status(201).json(user)
+
+      console.log('nuser', nuser)
+      return res.status(201).json(nuser)
     })
   })
 

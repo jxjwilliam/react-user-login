@@ -48,7 +48,6 @@ export const searchUsers = keyword => dispatch => {
 }
 
 export const updateUser = user => dispatch => {
-  debugger
   fetch('/api/list', {
     method: 'PUT',
     headers: {
@@ -64,11 +63,11 @@ export const updateUser = user => dispatch => {
 };
 
 export const saveUser = user => dispatch => {
-  fetch('/api/list', {
+  return fetch('/api/list', {
     method: 'POST',
     headers: {
-      "Content-type": "application/json",
-      'Accept': 'application/json'
+      'Accept': 'application/json',
+      'Content-Type': 'application/json'
     },
     body: JSON.stringify(user)
   })
@@ -94,7 +93,7 @@ export const deleteUser = user => dispatch => {
       return res.json()
     })
     .then(
-      (data) =>  dispatch({type: 'DELETE_USER', payload: user}),
+      (data) => dispatch({type: 'DELETE_USER', payload: user}),
       (error) => dispatch({type: 'DELETE_USER_FAIL', error}));
 }
 

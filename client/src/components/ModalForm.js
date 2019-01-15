@@ -8,25 +8,28 @@ import {connect} from 'react-redux'
  * fade:not(.show) { opacity: 0; }
  * <div role="dialog" tabindex="-1" class="fade show in modal" style="display: block;">
  */
-const AddEditModal = ({show, close, onUpdate, user}) => (
-  <Modal
-    show={show}
-    className={show ? "show" : ''}
-    onHide={close}
-  >
-    <Modal.Header closeButton>
-      <Modal.Title>{user.email ? user.email : 'Add User'}</Modal.Title>
-    </Modal.Header>
+const AddEditModal = ({show, close, onUpdate, user}) => {
+  let newOrUpdate = !!user.email
+  return (
+    <Modal
+      show={show}
+      className={show ? "show" : ''}
+      onHide={close}
+    >
+      <Modal.Header closeButton>
+        <Modal.Title>{user.email ? user.email : 'Add User'}</Modal.Title>
+      </Modal.Header>
 
-    <Modal.Body>
-      <EditForm onSubmit={onUpdate} user={user}/>
-    </Modal.Body>
+      <Modal.Body>
+        <EditForm onSubmit={onUpdate} user={user}/>
+      </Modal.Body>
 
-    <Modal.Footer>
-      <Button onClick={close}>Close</Button>
-    </Modal.Footer>
-  </Modal>
-)
+      <Modal.Footer>
+        <Button onClick={close}>Close</Button>
+      </Modal.Footer>
+    </Modal>
+  )
+}
 
 let EditForm = (props) => {
   const {handleSubmit, user, pristine, reset, submitting} = props;
@@ -59,18 +62,32 @@ let EditForm = (props) => {
           </div>
         </div>
         { !user.email && (
-          <div>
-            <label htmlFor="email">Email</label>
+          <React.Fragment>
             <div>
-              <Field
-                name="email"
-                component="input"
-                type="email"
-                placeholder="Email"
-                value={user.email}
-              />
+              <label htmlFor="email">Email</label>
+              <div>
+                <Field
+                  name="email"
+                  component="input"
+                  type="email"
+                  placeholder="Email"
+                  value={user.email}
+                />
+              </div>
             </div>
-          </div>
+            <div>
+              <label htmlFor="password">Password</label>
+              <div>
+                <Field
+                  name="password"
+                  component="input"
+                  type="password"
+                  placeholder="Password"
+                  value={user.password}
+                />
+              </div>
+            </div>
+          </React.Fragment>
         )}
         <div>
           <label htmlFor="Development_Team">Team</label>
@@ -172,16 +189,18 @@ let EditForm = (props) => {
             />
           </div>
         </div>
-        <div>
+        { user.email && (
           <div>
-            <Field
-              name="id"
-              component="input"
-              type="hidden"
-              value={user._id}
-            />
+            <div>
+              <Field
+                name="id"
+                component="input"
+                type="hidden"
+                value={user._id}
+              />
+            </div>
           </div>
-        </div>
+        )}
         <div>
           <button type="submit" className="btn btn-primary" disabled={pristine || submitting}>Update</button>
           <button type="button" className="btn btn-warning" disabled={pristine || submitting} onClick={reset}>Clear
