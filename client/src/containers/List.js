@@ -5,7 +5,8 @@ import {areEqualShallow, isEmpty} from '../utils'
 import * as ListAction from '../actions/listAction'
 import {searchFields} from '../reducers/listReducer'
 import Searchbox from '../components/Search'
-import AddEditModal from '../components/ModalForm'
+//import ModalForm from '../components/ModalForm'
+import ModalForm from '../components/Modal1'
 
 const SortAsc = ({sort, name}) => (
   <button
@@ -324,7 +325,7 @@ class List extends Component {
               </table>
             </div>
             <div className="modal-123">
-              <AddEditModal
+              <ModalForm
                 show={this.state.showModal}
                 close={this.close}
                 onUpdate={this.doUser}

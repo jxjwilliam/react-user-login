@@ -8,30 +8,27 @@ import {connect} from 'react-redux'
  * fade:not(.show) { opacity: 0; }
  * <div role="dialog" tabindex="-1" class="fade show in modal" style="display: block;">
  */
-const AddEditModal = ({show, close, onUpdate, user}) => {
-  let newOrUpdate = !!user.email
-  return (
-    <Modal
-      show={show}
-      className={show ? "show" : ''}
-      onHide={close}
-    >
-      <Modal.Header closeButton>
-        <Modal.Title>{user.email ? user.email : 'Add User'}</Modal.Title>
-      </Modal.Header>
+const ModalForm = ({show, close, onUpdate, user}) => (
+  <Modal
+    show={show}
+    className={show ? "show" : ''}
+    onHide={close}
+  >
+    <Modal.Header closeButton>
+      <Modal.Title>{user.email ? user.email : 'Add User'}</Modal.Title>
+    </Modal.Header>
 
-      <Modal.Body>
-        <EditForm onSubmit={onUpdate} user={user}/>
-      </Modal.Body>
+    <Modal.Body>
+      <ReduxForm onSubmit={onUpdate} user={user}/>
+    </Modal.Body>
 
-      <Modal.Footer>
-        <Button onClick={close}>Close</Button>
-      </Modal.Footer>
-    </Modal>
-  )
-}
+    <Modal.Footer>
+      <Button onClick={close}>Close</Button>
+    </Modal.Footer>
+  </Modal>
+)
 
-let EditForm = (props) => {
+let ReduxForm = (props) => {
   const {handleSubmit, user, pristine, reset, submitting} = props;
   return (
     <div className="row" style={{marginTop: 40, paddingLeft: 40}}>
@@ -174,7 +171,7 @@ let EditForm = (props) => {
               <option value="select">-- location --</option>
               <option value="HK">HK</option>
               <option value="GZ">GZ</option>
-              <option value="XZ">XZ</option>
+              <option value="XA">XA</option>
               <option value="Other">Other</option>
             </Field>
           </div>
@@ -190,16 +187,12 @@ let EditForm = (props) => {
           </div>
         </div>
         { user.email && (
-          <div>
-            <div>
-              <Field
-                name="id"
-                component="input"
-                type="hidden"
-                value={user._id}
-              />
-            </div>
-          </div>
+          <Field
+            name="id"
+            component="input"
+            type="hidden"
+            value={user._id}
+          />
         )}
         <div>
           <button type="submit" className="btn btn-primary" disabled={pristine || submitting}>Update</button>
@@ -218,8 +211,8 @@ function mapStateToProps(state, ownProps) {
   }
 }
 
-EditForm = connect(mapStateToProps)(reduxForm({
+ReduxForm = connect(mapStateToProps)(reduxForm({
   form: 'add_modify_User'  // an unique identifier for this form
-})(EditForm))
+})(ReduxForm))
 
-export default AddEditModal
+export default ModalForm
