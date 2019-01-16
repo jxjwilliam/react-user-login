@@ -183,7 +183,6 @@ class List extends Component {
   }
 
   doUser = values => {
-    values.team = ['Admin'];
     if (areEqualShallow(values, this.state.user)) {
       console.log('doUser - nothing change: values === this.state.user');
       this.setState({showModal: false, user: {}});

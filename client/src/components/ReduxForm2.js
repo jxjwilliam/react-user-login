@@ -1,17 +1,73 @@
-import React, {Fragment} from 'react'
+import React, {Fragment, Component} from 'react'
 import {Field, reduxForm} from 'redux-form'
 import {connect} from 'react-redux'
+import PropTypes from 'prop-types'
 
-const Checkbox = props => (
-  <div className="checkbox">
-    <input
-      {...props.input}
+// https://github.com/erikras/redux-form/issues/1037
+class CheckboxGroup extends Component {
+  static propTypes = {
+    options: PropTypes.arrayOf(PropTypes.shape({
+      label: PropTypes.string.isRequired,
+      value: PropTypes.string.isRequired
+    })).isRequired
+  }
+
+  field = ({input, meta, options}) => {
+    const {name, onChange} = input;
+    const {touched, error} = meta;
+    const inputValue = input.value;
+
+    const checkboxes = options.map(({label, value}, index) => {
+
+      const handleChange = (event) => {
+        const arr = [...inputValue]
+        if (event.target.checked) {
+          arr.push(value);
+        }
+        else {
+          arr.splice(arr.indexOf(value), 1)
+        }
+        return onChange(arr)
+      }
+
+      const checked = inputValue.includes(value);
+      return (
+        <label key={`checkbox-${index}`}>
+          <input type="checkbox" name={`${name}[${index}]`} value={value} checked={checked} onChange={handleChange}/>
+          <span>{label}</span>
+        </label>
+      )
+    })
+
+    return (
+      <div>
+        <div>{checkboxes}</div>
+        {touched && error && <p className="error">{error}</p>}
+      </div>
+    )
+  }
+
+  render() {
+    return <Field
+      {...this.props}
       type="checkbox"
-      checked={props.input.value}
+      component={this.field}
     />
-    <label>{props.label}</label>
-  </div>
-)
+  }
+}
+
+const Checkbox = props => { // eslint-disable-line no-unused-vars
+  return (
+    <div className="checkbox">
+      <input
+        {...props.input}
+        type="checkbox"
+        checked={props.input.value}
+      />
+      <label>{props.label}</label>
+    </div>
+  )
+}
 
 const Radio = props => {
   if (props && props.input && props.options) {
@@ -43,7 +99,6 @@ const Radio = props => {
   }
   return <Fragment></Fragment>
 }
-
 
 const Select = props => {
   const renderSelectOptions = (key, index) => {
@@ -88,7 +143,6 @@ const validate = values => {
   return errors
 }
 
-
 const renderField = props => {
   const {input, label, type, meta:{touched, error}} = props;
   return (
@@ -107,9 +161,8 @@ const renderField = props => {
   )
 }
 
-/* Development Team, Support_Group, Admin */
 const ReduxForm = (props) => {
-  const {handleSubmit, user, pristine, reset, submitting} = props;
+  const {handleSubmit, pristine, reset, submitting} = props;
   return (
     <div className="row" style={{marginTop: 40, paddingLeft: 40}}>
       <form onSubmit={handleSubmit}>
@@ -117,40 +170,33 @@ const ReduxForm = (props) => {
         <Field
           name="firstName"
           component={renderField}
-          value={user.firstName}
           type="text"
           label="First Name"
         />
-
         <Field
           name="lastName"
           component={renderField}
-          value={user.lastName}
           type="text"
           label="Last Name"
         />
-
         <Field
           name="email"
           component={renderField}
-          value={user.email}
           type="email"
           label="Email"
         />
-
         <Field
           name="password"
           component={renderField}
-          value={user.password}
           type="password"
           label="Password"
         />
 
-        <Field
-          name="team"
-          component={Checkbox}
-          label="Team"
-        />
+        <CheckboxGroup name="team" options={[
+          {label: 'Development Team', value: 'Development Team'},
+          {label: 'Support_Group', value: 'Support_Group'},
+          {label: 'Admin', value: 'Admin'}
+        ]}/>
 
         <Field
           name="role"
@@ -181,7 +227,6 @@ const ReduxForm = (props) => {
             <Field
               name="comment"
               component="textarea"
-              value={user.comment}
             />
           </div>
         </div>

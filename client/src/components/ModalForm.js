@@ -42,7 +42,7 @@ let ReduxForm = (props) => {
               component="input"
               type="text"
               placeholder="First Name"
-              value={user.firstName}
+              {/*value={user.firstName}*/}
             />
           </div>
         </div>
@@ -54,7 +54,7 @@ let ReduxForm = (props) => {
               component="input"
               type="text"
               placeholder="Last Name"
-              value={user.lastName}
+              {/*value={user.lastName}*/}
             />
           </div>
         </div>
@@ -68,7 +68,7 @@ let ReduxForm = (props) => {
                   component="input"
                   type="email"
                   placeholder="Email"
-                  value={user.email}
+                  {/*value={user.email}*/}
                 />
               </div>
             </div>
@@ -80,7 +80,7 @@ let ReduxForm = (props) => {
                   component="input"
                   type="password"
                   placeholder="Password"
-                  value={user.password}
+                  {/*value={user.password}*/}
                 />
               </div>
             </div>
@@ -136,7 +136,7 @@ let ReduxForm = (props) => {
                 name="role"
                 component="input"
                 type="radio"
-                value="Scrum Master"
+                {/*value="Scrum Master"*/}
               />{' '}
               Scrum Master
             </label>
@@ -145,7 +145,7 @@ let ReduxForm = (props) => {
                 name="role"
                 component="input"
                 type="radio"
-                value="Project Manager"
+                {/*value="Project Manager"*/}
               />{' '}
               Project Manager
             </label>
@@ -154,7 +154,7 @@ let ReduxForm = (props) => {
                 name="role"
                 component="input"
                 type="radio"
-                value="Business Analyst"
+                {/*value="Business Analyst"*/}
               />{' '}
               Business Analyst
             </label>
@@ -166,7 +166,7 @@ let ReduxForm = (props) => {
             <Field
               name="location"
               component="select"
-              value={user.location}
+              {/*value={user.location}*/}
             >
               <option value="select">-- location --</option>
               <option value="HK">HK</option>
@@ -182,18 +182,10 @@ let ReduxForm = (props) => {
             <Field
               name="comment"
               component="textarea"
-              value={user.comment}
+              {/*value={user.comment}*/}
             />
           </div>
         </div>
-        { user.email && (
-          <Field
-            name="id"
-            component="input"
-            type="hidden"
-            value={user._id}
-          />
-        )}
         <div>
           <button type="submit" className="btn btn-primary" disabled={pristine || submitting}>Update</button>
           <button type="button" className="btn btn-warning" disabled={pristine || submitting} onClick={reset}>Clear
@@ -212,7 +204,7 @@ function mapStateToProps(state, ownProps) {
 }
 
 ReduxForm = connect(mapStateToProps)(reduxForm({
-  form: 'add_modify_User'  // an unique identifier for this form
+  form: 'add_modify_user'  // an unique identifier for this form
 })(ReduxForm))
 
 export default ModalForm
