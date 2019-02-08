@@ -31,3 +31,6 @@ npm-debug.log
 
 yarn.*
 yarn-error.*
+
+package-lock.json
+.idea/*
