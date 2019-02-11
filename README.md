@@ -109,36 +109,20 @@ Scaffolders
 1. create-react-app
 1. express-cli
 
-Screenshots
+Heroku
 ------------
 
-The following are the screenshots with the sequences:
+```bash
 
-1. Signup to create a user
+$ heroku login
 
-![Signup](./imgs/1.png)
+$ heroku git:cline -a tranquil-wildwood-11956
 
-2. Login with this created user
+$ cd tranquil-wildwood-11956
 
-![Login](./imgs/2.png)
+$ git add .
+$ git commit -am"update README.md, remove img/ folder."
+$ git push heroku master
 
-3. Entry of Edit screen
-
-![Initial Form](./imgs/3.png)
-
-4. Edit the Form
-
-![Eidt Form](./imgs/4.png)
-
-5. Submit the Form
-
-![submit](./imgs/5.png)
-
-6. Re login this user
-
-![Re-Login](./imgs/6.png)
-
-7. check the data persistance
-
-![Review](./imgs/7.png)
+```
 
