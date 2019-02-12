@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "server": "nodemon ./bin/www",
-    "start": "babel-node ./bin/www",
+    "start": "./node_modules/.bin/babel-node ./bin/www",
     "dev": "concurrently \"cd client && yarn start\" \"npm run server\""
   },
   "dependencies": {
