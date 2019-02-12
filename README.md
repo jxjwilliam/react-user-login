@@ -167,35 +167,15 @@ $ heroku addons:create mongolab:sandbox
 
 ```
 
-# Screenshots
+```bash
 
-The following are the screenshots with the sequences:
+$ heroku git:clone -a tranquil-wildwood-11956
 
-1. Signup to create a user
+$ cd tranquil-wildwood-11956
 
-![Signup](./imgs/1.png)
+$ git add .
+$ git commit -am"update README.md, remove img/ folder."
+$ git push heroku master
 
-2. Login with this created user
-
-![Login](./imgs/2.png)
-
-3. Entry of Edit screen
-
-![Initial Form](./imgs/3.png)
-
-4. Edit the Form
-
-![Eidt Form](./imgs/4.png)
-
-5. Submit the Form
-
-![submit](./imgs/5.png)
-
-6. Re login this user
-
-![Re-Login](./imgs/6.png)
-
-7. check the data persistance
-
-![Review](./imgs/7.png)
+```
 
