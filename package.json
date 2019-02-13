@@ -4,7 +4,8 @@
   "private": true,
   "scripts": {
     "server": "nodemon ./bin/www",
-    "start": "NODE_ENV=production ./node_modules/.bin/babel-node ./bin/www",
+    "start1": "NODE_ENV=production ./node_modules/.bin/babel-node ./bin/www",
+    "start": "NODE_ENV=production node ./bin/www",
     "dev": "NODE_ENV=production concurrently \"cd client && yarn start\" \"npm run server\""
   },
   "dependencies": {
