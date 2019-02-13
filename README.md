@@ -1,5 +1,13 @@
 # React User Login Qucik Start
 
+The Demo is available at <code>Heroku</code>:
+
+<blockquote>
+ https://tranquil-wildwood-11956.herokuapp.com/
+</blockquote>
+
+The following instructs *Locally* setup.
+
 ## Pre-Request
 
 1. Download source and install dependencies
@@ -148,11 +156,14 @@ $ open http://localhost:8888/signup
 
 1. create-react-app
 1. express-cli
-
+1. mongodb config:
+<code>
+mongodb://williamjxj:Benjamin001@ds133275.mlab.com:33275/heroku_sg72zngp
+</code>
 
 # Heroku deployment
 
-Heroku client should be installed firstly.
+<code>Heroku</code> client should be installed firstly.
 
 ```bash
 $ heroku login
@@ -162,27 +173,15 @@ $ cd react-user-login
 
 $ heroku create
 
+$ heroku addons:create mongolab:sandbox
+
+$ heroku logs --tail
+
 $ git push heroku master
 
 $ heroku ps:scale web=1
 
 $ heroku open
-
-$ heroku logs --tail
-
-$ heroku addons:create mongolab:sandbox
-
 ```
 
-```bash
-
-$ heroku git:clone -a tranquil-wildwood-11956
-
-$ cd tranquil-wildwood-11956
-
-$ git add .
-$ git commit -am"update README.md, remove img/ folder."
-$ git push heroku master
-
-```
-
+The accessible URL is: <code>https://tranquil-wildwood-11956.herokuapp.com/</code>
