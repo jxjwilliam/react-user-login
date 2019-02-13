@@ -1,5 +1,3 @@
 const PORT = 8888;
 
-export {
-  PORT,
-}
+module.exports = PORT

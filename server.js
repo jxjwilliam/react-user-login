@@ -44,7 +44,6 @@ app.use(cookieParser());
 // ./client/build
 app.use(express.static(path.join(__dirname, "client", "build")));
 
-
 app.use("/", index);
 
 app.use("/api/signup", signup);
