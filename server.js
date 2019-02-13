@@ -17,7 +17,17 @@ const list = require("./routes/list")
 const app = express();
 const routers = express.Router();
 
-mongoose.connect("mongodb://localhost:27017/userlogin", {useNewUrlParser: true});
+var dbUri;
+
+if (process.env.NODE_ENV === 'production') {
+  dbUri = "mongodb://williamjxj:Benjamin001@ds133275.mlab.com:33275/heroku_sg72zngp";
+}
+else {
+  dbUri = "mongodb://localhost:27017/userlogin";
+}
+
+// mongodb://<dbuser>:<dbpassword>@ds133275.mlab.com:33275/heroku_sg72zngp
+mongoose.connect(dbUri, {useNewUrlParser: true});
 app.set("superSecret", "userloginjsonwebtoken");
 
 // app.use(favicon(path.join(__dirname, "favicon.ico")));

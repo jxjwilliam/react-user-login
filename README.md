@@ -17,6 +17,13 @@ $ cd client && npm install && cd ..
 $ mongod &
 ```
 
+1. Environment setting (Optional):
+
+```bash
+$ export NODE_ENV=production
+$ export PORT=8888
+```
+
 ## Quick Start  (using proxy)
 
 There are 2 ways to start, just select 1 of them:
