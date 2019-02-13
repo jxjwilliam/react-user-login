@@ -1,1 +1,1 @@
-web: NODE_ENV=production node ./bin/www
+web: NODE_ENV=production PORT=443 node ./bin/www
