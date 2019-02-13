@@ -44,9 +44,23 @@ app.use(cookieParser());
 // ./client/build
 app.use(express.static(path.join(__dirname, "client", "build")));
 
-if (process.env.NODE_ENV === "production") {
-  app.use(express.static("./client/build"));
-}
+// if (process.env.NODE_ENV === "production") {
+//   app.use(express.static("./client/build"));
+// }
+
+
+// decouple static files to Amazon S3 ?
+// app.use((req, res, next) => {
+//   res.header(
+//     "Access-Control-Allow-Origin",
+//     "https://tranquil-wildwood-11956.herokuapp.com/"
+//   );
+//   res.header(
+//     "Access-Control-Allow-Headers",
+//     "Origin, X-Requested-With, Content-Type, Accept"
+//   )
+//   next();
+// });
 
 app.use("/", index);
 
