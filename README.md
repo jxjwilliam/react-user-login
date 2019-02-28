@@ -165,3 +165,14 @@ The following are the screenshots with the sequences:
 
 ![Review](./imgs/7.png)
 
+![p1](./imgs/p1.png)
+
+![p2](./imgs/p2.png)
+
+![p3](./imgs/p3.png)
+
+![p4](./imgs/p4.png)
+
+![p5](./imgs/p5.png)
+
+![p6](./imgs/p6.png)
