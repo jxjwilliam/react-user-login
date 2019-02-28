@@ -64,6 +64,29 @@ Backend
 - routers
 - express.js
 
+Features
+---------
+
+- full-stack Solution 
+- React
+- Redux
+- react-router
+- sorting
+- field filter
+- search (debounce)
+- pagination
+- JWT token
+- redux-form with CRUD
+- redux-thunk for Ajax
+- redux-logger with Redux-debugger
+- Node.js + Express.js (web-server)
+- MongoDB
+- fontawesome (webFont)
+- Restful APIs
+- react-model
+- Heroku cloud service
+- built production version
+
 
 APIs
 ----
