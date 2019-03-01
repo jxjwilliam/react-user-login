@@ -1,16 +1,25 @@
-# React User Login Qucik Start
+# React User Login 
+
+##1. `Heroku` demo:
 
 The Demo is available at <code>Heroku</code>:
 
-<blockquote>
- https://tranquil-wildwood-11956.herokuapp.com/
-</blockquote>
+> https://tranquil-wildwood-11956.herokuapp.com/
+
+##2. `Docker` repository:
+
+The Demo also has a Docker/Kubernetes version:
+
+> https://cloud.docker.com/repository/create
+
+
+# Quick Start
 
 The following instructs *Locally* setup.
 
-## Pre-Request
+##1. Pre-Request
 
-1. Download source and install dependencies
+* Download source and install dependencies
 
 ```bash
 $ git clone https://github.com/jxjwilliam/react-user-login.git
@@ -19,33 +28,31 @@ $ npm install
 $ cd client && npm install && cd ..
 ```
 
-1. start Mongodb daemon
+* start Mongodb daemon
 
 ```bash
 $ mongod &
 ```
 
-1. Environment setting (Optional):
+* Environment setting (Optional):
 
 ```bash
 $ export NODE_ENV=production
 $ export PORT=8888
 ```
 
-## Quick Start  (using proxy)
+## 2 servers with proxy
 
 There are 2 ways to start, just select 1 of them:
 
-1. Option 1:
+### Option 1:
 
 ```bash
 $ cd client
-$ yarn start  
-// or: npm run start
+$ npm run start
 
 $ cd ..
-$ yarn server
-// or npm run server
+$ npm run server
 
 $ open localhost:3000/
 ```
@@ -53,7 +60,7 @@ $ open localhost:3000/
 Here it goes!
 
 
-1. Optional 2:
+### Optional 2:
 
 ```bash
 $ npm run dev
@@ -184,4 +191,13 @@ $ heroku ps:scale web=1
 $ heroku open
 ```
 
-The accessible URL is: <code>https://tranquil-wildwood-11956.herokuapp.com/</code>
+
+
+## Deploy to GCP
+
+202.65.196.242
+
+
+
+
+## Deploy with AWS Mongodb Atlas

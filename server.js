@@ -19,11 +19,23 @@ const routers = express.Router();
 
 var dbUri;
 
+/**
+ * As a SaaS, or PaaS, there are several options to host `mongodb`.
+ */
+const HostList = {
+  "local": "mongodb://localhost:27017/userlogin",
+  "heroku": "mongodb://williamjxj:Benjamin001@ds133275.mlab.com:33275/heroku_sg72zngp",
+  "mongodb.atlas": "mongodb://williamjxj:Benjamin001@cluster0-shard-00-00-rwvhp.mongodb.net:27017,cluster0-shard-00-01-rwvhp.mongodb.net:27017,cluster0-shard-00-02-rwvhp.mongodb.net:27017/test?ssl=true&replicaSet=Cluster0-shard-0&authSource=admin&retryWrites=true",
+  "gcp": "",
+}
+
+
 if (process.env.NODE_ENV === 'production') {
-  dbUri = "mongodb://williamjxj:Benjamin001@ds133275.mlab.com:33275/heroku_sg72zngp";
+  dbUri = HostList["heroku"];
 }
 else {
-  dbUri = "mongodb://localhost:27017/userlogin";
+  //dbUri = "mongodb://localhost:27017/userlogin";
+  dbUri = HostList["mongodb.atlas"];
 }
 
 // mongodb://<dbuser>:<dbpassword>@ds133275.mlab.com:33275/heroku_sg72zngp
