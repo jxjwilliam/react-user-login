@@ -126,53 +126,36 @@ DB Schema
 }
 ```
 
-Scaffolders
-------------
+## Scaffolders
 
 1. create-react-app
 1. express-cli
 
-Screenshots
-------------
+## Configuration
 
-The following are the screenshots with the sequences:
+### 1. source code hosting
 
-1. Signup to create a user
+- locally
+- GCP (Google Cloud)
+- Heroku (AWS Cloud)
 
-![Signup](./imgs/1.png)
+### 2. Mongodb hosting
 
-2. Login with this created user
+- locally: mongodb://localhost:27017/userlogin
+- GCP (Google Cloud)
+- MongoDB Atlas (AWS MongoDB Cloud): 
 
-![Login](./imgs/2.png)
+SRV address:
+mongodb+srv://williamjxj:<PASSWORD>@cluster0-rwvhp.mongodb.net/test?retryWrites=true
 
-3. Entry of Edit screen
+Standard connection string:
+mongodb://williamjxj:<PASSWORD>@cluster0-shard-00-00-rwvhp.mongodb.net:27017,cluster0-shard-00-01-rwvhp.mongodb.net:27017,cluster0-shard-00-02-rwvhp.mongodb.net:27017/test?ssl=true&replicaSet=Cluster0-shard-0&authSource=admin&retryWrites=true
 
-![Initial Form](./imgs/3.png)
+- Heroku (mlab): mongodb://wiliamjxj:Benjamin001@ds133275.mlab.com/heroku_sg72zngp
 
-4. Edit the Form
 
-![Eidt Form](./imgs/4.png)
+### 3. Summary
 
-5. Submit the Form
+1. locally (source + db): works        (http://localhost:3000/)
+2. heroku hosting (source + db): works (https://tranquil-wildwood-11956.herokuapp.com/)
 
-![submit](./imgs/5.png)
-
-6. Re login this user
-
-![Re-Login](./imgs/6.png)
-
-7. check the data persistance
-
-![Review](./imgs/7.png)
-
-![p1](./imgs/p1.png)
-
-![p2](./imgs/p2.png)
-
-![p3](./imgs/p3.png)
-
-![p4](./imgs/p4.png)
-
-![p5](./imgs/p5.png)
-
-![p6](./imgs/p6.png)
