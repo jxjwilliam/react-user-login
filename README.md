@@ -122,6 +122,29 @@ $ open http://localhost:8888/signup
 - routers
 - express.js
 
+Features
+---------
+
+- full-stack Solution 
+- React
+- Redux
+- react-router
+- sorting
+- field filter
+- search (debounce)
+- pagination
+- JWT token
+- redux-form with CRUD
+- redux-thunk for Ajax
+- redux-logger with Redux-debugger
+- Node.js + Express.js (web-server)
+- MongoDB
+- fontawesome (webFont)
+- Restful APIs
+- react-model
+- Heroku cloud service
+- built production version
+
 
 ## APIs
 
@@ -168,6 +191,34 @@ $ open http://localhost:8888/signup
 mongodb://williamjxj:Benjamin001@ds133275.mlab.com:33275/heroku_sg72zngp
 </code>
 
+## Configuration
+
+### 1. source code hosting
+
+- locally
+- GCP (Google Cloud)
+- Heroku (AWS Cloud)
+
+### 2. Mongodb hosting
+
+- locally: mongodb://localhost:27017/userlogin
+- GCP (Google Cloud)
+- MongoDB Atlas (AWS MongoDB Cloud): 
+
+SRV address:
+mongodb+srv://williamjxj:<PASSWORD>@cluster0-rwvhp.mongodb.net/test?retryWrites=true
+
+Standard connection string:
+mongodb://williamjxj:<PASSWORD>@cluster0-shard-00-00-rwvhp.mongodb.net:27017,cluster0-shard-00-01-rwvhp.mongodb.net:27017,cluster0-shard-00-02-rwvhp.mongodb.net:27017/test?ssl=true&replicaSet=Cluster0-shard-0&authSource=admin&retryWrites=true
+
+- Heroku (mlab): mongodb://wiliamjxj:Benjamin001@ds133275.mlab.com/heroku_sg72zngp
+
+
+### 3. Summary
+
+1. locally (source + db): works        (http://localhost:3000/)
+2. heroku hosting (source + db): works (https://tranquil-wildwood-11956.herokuapp.com/)
+=======
 # Heroku deployment
 
 <code>Heroku</code> client should be installed firstly.
