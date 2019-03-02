@@ -19,14 +19,38 @@ const routers = express.Router();
 
 var dbUri;
 
-if (process.env.NODE_ENV === 'production') {
-  dbUri = "mongodb://williamjxj:Benjamin001@ds133275.mlab.com:33275/heroku_sg72zngp";
-}
-else {
-  dbUri = "mongodb://localhost:27017/userlogin";
+/**
+ * As a SaaS, or PaaS, there are several options to host `mongodb`.
+ */
+
+
+// mongodb://williamjxj:Benjamin001@cluster0-shard-00-00-rwvhp.mongodb.net:27017,cluster0-shard-00-01-rwvhp.mongodb.net:27017,cluster0-shard-00-02-rwvhp.mongodb.net:27017/test?ssl=true&replicaSet=Cluster0-shard-0&authSource=admin&retryWrites=true"
+var str1 = "mongodb://williamjxj:Benjamin001@";
+var mongocloud = [
+  "cluster0-shard-00-00-rwvhp.mongodb.net",
+  "cluster0-shard-00-01-rwvhp.mongodb.net",
+  "cluster0-shard-00-02-rwvhp.mongodb.net"].join(":27017,")
+var str2 = ":27017/test?ssl=true&replicaSet=Cluster0-shard-0&authSource=admin&retryWrites=true";
+
+const MongoHostsList = {
+  "local": "mongodb://localhost:27017/userlogin",
+  "heroku.mlab": "mongodb://williamjxj:Benjamin001@ds133275.mlab.com:33275/heroku_sg72zngp",
+  "mongodb.atlas": str1 + mongocloud + str2,
+  "gcp": "",
 }
 
-// mongodb://<dbuser>:<dbpassword>@ds133275.mlab.com:33275/heroku_sg72zngp
+
+if (process.env.NODE_ENV === 'production') {
+  dbUri = MongoHostsList["heroku.mlab"];
+}
+else if (/dev/.test(process.env.NODE_ENV)) {
+  dbUri = MongoHostsList.local;
+}
+//TODO: gcp ?
+else {
+  dbUri = MongoHostsList["mongodb.atlas"];
+}
+
 mongoose.connect(dbUri, {useNewUrlParser: true});
 app.set("superSecret", "userloginjsonwebtoken");
 
