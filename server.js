@@ -17,7 +17,17 @@ const list = require("./routes/list")
 const app = express();
 const routers = express.Router();
 
-mongoose.connect("mongodb://localhost:27017/userlogin", {useNewUrlParser: true});
+var dbUri;
+
+if (process.env.NODE_ENV === 'production') {
+  dbUri = "mongodb://williamjxj:Benjamin001@ds133275.mlab.com:33275/heroku_sg72zngp";
+}
+else {
+  dbUri = "mongodb://localhost:27017/userlogin";
+}
+
+// mongodb://<dbuser>:<dbpassword>@ds133275.mlab.com:33275/heroku_sg72zngp
+mongoose.connect(dbUri, {useNewUrlParser: true});
 app.set("superSecret", "userloginjsonwebtoken");
 
 // app.use(favicon(path.join(__dirname, "favicon.ico")));
@@ -34,6 +44,23 @@ app.use(cookieParser());
 // ./client/build
 app.use(express.static(path.join(__dirname, "client", "build")));
 
+// if (process.env.NODE_ENV === "production") {
+//   app.use(express.static("./client/build"));
+// }
+
+
+// decouple static files to Amazon S3 ?
+// app.use((req, res, next) => {
+//   res.header(
+//     "Access-Control-Allow-Origin",
+//     "https://tranquil-wildwood-11956.herokuapp.com/"
+//   );
+//   res.header(
+//     "Access-Control-Allow-Headers",
+//     "Origin, X-Requested-With, Content-Type, Accept"
+//   )
+//   next();
+// });
 
 app.use("/", index);
 
