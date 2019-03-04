@@ -249,6 +249,4 @@ $ heroku open
 202.65.196.242
 
 
-
-
 ## Deploy with AWS Mongodb Atlas
