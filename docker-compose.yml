@@ -1,0 +1,20 @@
+version: '2'
+services: 
+  db:
+    image: mongo
+    ports:
+      - "27017:27017"
+    backend:
+      image: react-user-login
+      ports:
+        - "8000:8000"
+      depends_on: 
+        - db
+    frontend:
+      image: react-user-login-client
+      port:
+        - "8080:8080"
+      depends_on: 
+        - backend
+
+# docker-compose up

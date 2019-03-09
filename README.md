@@ -252,6 +252,5 @@ $ heroku open
 
 ## Deploy with AWS Mongodb Atlas
 
-
 - `Procfile` is used by `Heroku`
 - `Dockerfile` is used by `Docker`
