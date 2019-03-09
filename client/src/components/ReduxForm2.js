@@ -217,6 +217,7 @@ const ReduxForm = (props) => {
             HK: 'HK',
             GZ: 'GZ',
             XA: 'XA',
+            SZ: 'SZ',
             Other: 'Other'
           }}
         />

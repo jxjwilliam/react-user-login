@@ -171,6 +171,7 @@ let ReduxForm = (props) => {
               <option value="select">-- location --</option>
               <option value="HK">HK</option>
               <option value="GZ">GZ</option>
+              <option value="SZ">SZ</option>
               <option value="XA">XA</option>
               <option value="Other">Other</option>
             </Field>
