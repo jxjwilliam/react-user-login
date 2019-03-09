@@ -218,7 +218,8 @@ mongodb://williamjxj:<PASSWORD>@cluster0-shard-00-00-rwvhp.mongodb.net:27017,clu
 
 1. locally (source + db): works        (http://localhost:3000/)
 2. heroku hosting (source + db): works (https://tranquil-wildwood-11956.herokuapp.com/)
-=======
+
+
 # Heroku deployment
 
 <code>Heroku</code> client should be installed firstly.
@@ -249,6 +250,8 @@ $ heroku open
 202.65.196.242
 
 
-
-
 ## Deploy with AWS Mongodb Atlas
+
+
+- `Procfile` is used by `Heroku`
+- `Dockerfile` is used by `Docker`
